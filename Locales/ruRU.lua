@@ -78,6 +78,12 @@ L["%s (%d notes)"] = "%s (%d заметок)"
 -- ============================================================================
 -- UI/Options/General.lua
 -- ============================================================================
+L["Addon Language"] = "Язык аддона"
+L["Choose the language used by the addon UI. You will have to reload your UI for all changes to take effect. Automatic will take your client language."] = "Выберите язык, используемый в интерфейсе аддона. Для вступления изменений в силу потребуется перезагрузить интерфейс. В режиме 'Автоматически' будет использоваться язык Вашего клиента."
+L["Automatic"] = "Автоматически"
+L["English (enUS)"] = "Английский"
+L["Korean (koKR)"] = "Корейский"
+L["Russian (ruRU)"] = "Русский"
 L["General Options"] = "Общие настройки"
 L["Disable Minimap Button"] = "Отключить кнопку на миникарте"
 L["Hide the minimap button."] = "Скрыть кнопку на миникарте."
