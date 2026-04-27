@@ -13,6 +13,28 @@ local function BuildGeneralOptions()
     return {
         { type = "label", get = function() return L["General Options"] end, text_template = DF:GetTemplate("font", "ORANGE_FONT_TEMPLATE") },
         {
+            type = "select",
+            name = L["Addon Language"],
+            desc = L["Choose the language used by the addon UI. You will have to reload your UI for all changes to take effect. Automatic will take your client language."],
+            get = function() return NSRT.Settings.Language or "Auto" end,
+            values = function()
+                local langs = {
+                    { label = L["Automatic"],      value = "Auto" },
+                    { label = L["English (enUS)"], value = "enUS" },
+                    { label = L["Korean (koKR)"],  value = "koKR" },
+                    { label = L["Russian (ruRU)"], value = "ruRU" },
+                }
+                for _, entry in ipairs(langs) do
+                    local v = entry.value
+                    entry.onclick = function()
+                        NSRT.Settings.Language = v
+                    end
+                end
+                return langs
+            end,
+            nocombat = true,
+        },
+        {
             type = "toggle",
             boxfirst = true,
             name = L["Disable Minimap Button"],

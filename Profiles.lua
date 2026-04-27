@@ -36,6 +36,7 @@ function NSI:AddMissingDefaults()
 
         -- General Settings
         Settings = {
+            Language = "Auto",
             GlobalFont = "Expressway",
             GlobalFontSize = 20,
             GlobalEncounterFontSize = 20,

@@ -75,6 +75,12 @@ L["%s (%d notes)"] = true
 -- ============================================================================
 -- UI/Options/General.lua
 -- ============================================================================
+L["Addon Language"] = true
+L["Choose the language used by the addon UI. You will have to reload your UI for all changes to take effect. Automatic will take your client language."] = true
+L["Automatic"] = true
+L["English (enUS)"] = true
+L["Korean (koKR)"] = true
+L["Russian (ruRU)"] = true
 L["General Options"] = true
 L["Disable Minimap Button"] = true
 L["Hide the minimap button."] = true

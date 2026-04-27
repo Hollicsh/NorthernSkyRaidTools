@@ -242,6 +242,32 @@ end
 local Serialize = LibStub("AceSerializer-3.0")
 local Compress = LibStub("LibDeflate")
 
+-- Applies a user-selected language override by mutating the AceLocale table in-place.
+-- Must be called after NSRT is loaded (ADDON_LOADED). The UI reads L lazily so
+-- all strings will reflect the override the next time the options panel is opened.
+function NSI:ApplyLocaleOverride()
+    local lang = NSRT and NSRT.Settings and NSRT.Settings.Language
+    if not lang or lang == "Auto" then return end
+
+    local aceL = LibStub("AceLocale-3.0"):GetLocale("NorthernSkyRaidTools")
+
+    if lang == "enUS" then
+        -- Reset all known translated keys back to their English form (key == value in AceLocale)
+        for _, rawTable in pairs(NSI.RawLocales or {}) do
+            for k in pairs(rawTable) do
+                rawset(aceL, k, k)
+            end
+        end
+    else
+        local rawTable = NSI.RawLocales and NSI.RawLocales[lang]
+        if rawTable then
+            for k, v in pairs(rawTable) do
+                rawset(aceL, k, v)
+            end
+        end
+    end
+end
+
 function NSI:CreateExportString(SettingsTable) -- {"ReminderSettings", "PASettings", ...}
     local str = ""
     local ExportTable = {}
