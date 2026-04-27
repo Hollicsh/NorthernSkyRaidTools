@@ -242,14 +242,36 @@ end
 local Serialize = LibStub("AceSerializer-3.0")
 local Compress = LibStub("LibDeflate")
 
+-- Snapshot of the original locale strings before any override is applied.
+local _localeSnapshot = nil
+
 -- Applies a user-selected language override by mutating the AceLocale table in-place.
 -- Must be called after NSRT is loaded (ADDON_LOADED). The UI reads L lazily so
 -- all strings will reflect the override the next time the options panel is opened.
 function NSI:ApplyLocaleOverride()
     local lang = NSRT and NSRT.Settings and NSRT.Settings.Language
-    if not lang or lang == "Auto" then return end
-
     local aceL = LibStub("AceLocale-3.0"):GetLocale("NorthernSkyRaidTools")
+
+    -- Build a snapshot of the original (client) locale the first time we run.
+    if not _localeSnapshot then
+        _localeSnapshot = {}
+        for _, rawTable in pairs(NSI.RawLocales or {}) do
+            for k in pairs(rawTable) do
+                if _localeSnapshot[k] == nil then
+                    local v = rawget(aceL, k)
+                    _localeSnapshot[k] = (v == nil or v == true) and k or v
+                end
+            end
+        end
+    end
+
+    if not lang or lang == "Auto" then
+        -- Restore the original client locale strings.
+        for k, v in pairs(_localeSnapshot) do
+            rawset(aceL, k, v)
+        end
+        return
+    end
 
     if lang == "enUS" then
         -- Reset all known translated keys back to their English form (key == value in AceLocale)
