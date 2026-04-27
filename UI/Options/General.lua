@@ -28,6 +28,7 @@ local function BuildGeneralOptions()
                     local v = entry.value
                     entry.onclick = function()
                         NSRT.Settings.Language = v
+                        NSI:ApplyLocaleOverride()
                     end
                 end
                 return langs
