@@ -305,17 +305,6 @@ function NSI:AddMissingDefaults()
                 Width = 40,
                 Height = 40,
             },
-            TradeableItems = {
-                Anchor = "TOP",
-                relativeTo = "TOP",
-                GrowDirection = "DOWN",
-                Spacing = 5,
-                xOffset = 0,
-                yOffset = -400,
-                FontSize = 18,
-                Width = 30,
-                Height = 30,
-            },
         },
 
         -- Encounter Alerts
