@@ -285,7 +285,7 @@ function NSI:ProcessReminder()
                     tags[strtrim(name)] = true
                 end
                 specid = specid and tostring(specid)
-                if NSRT.ReminderSettings.ShowAllReminders or
+                local mematch =
                 (tag == "everyone" and not NSRT.ReminderSettings.IgnoreEveryone) or
                 tags[myname] or
                 tags[mynickname] or
@@ -294,11 +294,11 @@ function NSI:ProcessReminder()
                 tags[myclass] or
                 tags[subgroup] or
                 (pos and tags[pos])
-                then
+                if NSRT.ReminderSettings.ShowAllReminders or mematch then
                     if not addedpersonalreminders[key] then
                         addedpersonalreminders[key] = true
                         if pers then
-                            if (spellID or not NSRT.ReminderSettings.OnlySpellReminders) then -- only insert this if it's a spell or user wants to see text-reminders as well
+                            if mematch and (spellID or not NSRT.ReminderSettings.OnlySpellReminders) then -- only insert this if it's a spell or user wants to see text-reminders as well
                                 table.insert(personalremindertable, {str = displayLine, time = tonumber(time), phase = phase})
                             end
                         end
