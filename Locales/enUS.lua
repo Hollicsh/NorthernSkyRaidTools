@@ -376,9 +376,15 @@ L["Buff Checks"] = true
 L["Raid-Buff Check"] = true
 L["Checks if any relevant class needs your buff"] = true
 L["Healer Soulstone Check"] = true
-L["Checks for Warlocks whether they have soulstoned a healer and it has at least 5m duration left. It will only check this if Soulstone is ready or has less than 30s CD left."] = true
+L["Checks for Warlocks whether they have soulstoned a healer and it has at least 10m duration left. It will only check this if Soulstone is ready or has less than 30s CD left."] = true
 L["Source of Magic Check"] = true
-L["Checks for Evokers whether they have Source of Magic on a healer and it has at least 5m duration left."] = true
+L["Checks for Evokers whether they have Source of Magic on a healer and it has at least 10m duration left."] = true
+L["Blistering Scales Check"] = true
+L["Checks for Evokers whether they have Blistering Scales on a player and it has at least 10m duration left."] = true
+L["Symbiotic Relationship Check"] = true
+L["Checks for Druids whether they have Symbiotic Relationship on a player and it has at least 10m duration left."] = true
+
+
 L["Cooldowns Options"] = true
 L["Enable Cooldown Checking"] = true
 L["Enable cooldown checking for your cooldowns on ready check. This is only active in Heroic and Mythic Raids."] = true

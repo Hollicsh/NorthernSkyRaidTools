@@ -190,7 +190,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
     elseif e == "START_PLAYER_COUNTDOWN" and wowevent then -- do basically the same thing as ready check in case one of them is skipped
         if self.LastBroadcast and self.LastBroadcast > GetTime() - 30 then return end -- only do this if there was no recent ready check basically
         self.LastBroadcast = GetTime()
-        local specid = C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization())
+        local specid = self:GetMySpecID()
         self:Broadcast("NSI_SPEC", "RAID", specid)
         if UnitIsGroupLeader("player") and UnitInRaid("player") then
             local tosend = false
@@ -219,7 +219,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
             self.Assignments = NSRT.AssignmentSettings
         end
         -- broadcast spec info
-        local specid = C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization())
+        local specid = self:GetMySpecID()
         self:Broadcast("NSI_SPEC", "RAID", specid)
         if C_ChatInfo.InChatMessagingLockdown() then return end
         self.LastBroadcast = GetTime()
@@ -286,6 +286,26 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
                 end
             end
         end
+        if NSRT.ReadyCheckSettings.BlisteringScalesCheck and not self:Restricted() then
+            local BlisteringScales = self:BlisteringScalesCheck()
+            if BlisteringScales and BlisteringScales ~= "" then
+                if text == "" then
+                    text = BlisteringScales
+                else
+                    text = text.."\n"..BlisteringScales
+                end
+            end
+        end
+        if NSRT.ReadyCheckSettings.SymbioticRelationshipCheck and not self:Restricted() then
+            local SymbioticRelationship = self:SymbioticRelationshipCheck()
+            if SymbioticRelationship and SymbioticRelationship ~= "" then
+                if text == "" then
+                    text = SymbioticRelationship
+                else
+                    text = text.."\n"..SymbioticRelationship
+                end
+            end
+        end
         local Gear = self:GearCheck()
         if Gear and Gear ~= "" then
             if text == "" then
@@ -343,7 +363,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
             self.GUIDS[unit] = G
         end
     elseif e == "NSI_SPEC_REQUEST" then
-        local specid = GetSpecializationInfo(GetSpecialization())
+        local specid = self:GetMySpecID()
         self:Broadcast("NSI_SPEC", "RAID", specid)
     elseif e == "GROUP_ROSTER_UPDATE" and wowevent then
         self:ArrangeGroups()

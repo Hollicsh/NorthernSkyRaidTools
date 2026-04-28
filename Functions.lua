@@ -361,7 +361,7 @@ end
 function NSI:IsMelee(unit)
     local role = UnitGroupRolesAssigned(unit)
     if unit == "player" then
-        local spec = GetSpecializationInfo(GetSpecialization())
+        local spec = self:GetMySpecID()
         local melee = false
         if self.meleetable[spec] or role == "TANK" then
             melee = true
@@ -442,4 +442,8 @@ function NSI:LogTimeline(e, ...)
             data.state and string.format("  state: %s", data.state) or ""
         ))
     end
+end
+
+function NSI:GetMySpecID()
+    return C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization()) or 0
 end

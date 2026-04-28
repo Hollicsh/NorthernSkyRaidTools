@@ -276,6 +276,8 @@ function NSI:AddMissingDefaults()
             GatewayShardCheck = false,
             SkipGatewayKeybindCheck = false,
             SourceOfMagicCheck = false,
+            BlisteringScalesCheck = false,
+            SymbioticRelationshipCheck = false,
         },
 
         -- QoL Settings

@@ -158,7 +158,7 @@ function NSI:ProcessReminder()
         local subgroup = self:GetSubGroup("player")
         if not subgroup then subgroup = 1 end
         subgroup = "group"..subgroup
-        local specid = C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization())
+        local specid = self:GetMySpecID()
         local pos = self.spectable[specid]
         local encID = 0
         local mynickname = strlower(NSAPI:GetName("player", "GlobalNickNames"))

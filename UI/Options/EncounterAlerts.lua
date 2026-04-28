@@ -378,7 +378,7 @@ local function BuildEncounterAlertsOptions()
             type = "toggle",
             boxfirst = true,
             name = "Runes Display",
-            desc = "Enables the Map-Display for where each rune should be going. This requires other people to input the correct numbers into chat either via a macro or the click-option below. It also requires no one else to type anything else in raidchat during the encounter.",
+            desc = "Enables the Map-Display for where each rune should be going. This requires other people to input the correct numbers into chat via a macro. It also requires no one else to type anything else in raidchat during the encounter.",
             get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].RunesDisplay end,
             set = function(self, fixedparam, value)
                 NSRT.EncounterAlerts[3183] = NSRT.EncounterAlerts[3183] or {}
