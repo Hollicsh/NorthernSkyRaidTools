@@ -308,6 +308,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         if NSRT.NSUI and NSRT.NSUI.reminders_frame then NSUI.reminders_frame.UpdateButtonAccess() end
     elseif e == "NSI_VERSION_CHECK" and internal then
         if self:Restricted() then return end
+        if not self.VersionCheckData then return end -- ignore stale responses from a previous check
         local unit, ver, ignoreCheck = ...
         self:VersionResponse({name = UnitName(unit), version = ver, ignoreCheck = ignoreCheck})
     elseif e == "NSI_VERSION_REQUEST" and internal then
