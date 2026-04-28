@@ -56,6 +56,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         self.NSRTFrame:SetAllPoints(UIParent)
         local MyFrame = self.LGF.GetUnitFrame("player") -- need to call this once to init the library properly I think
         self:InitPrivateAuras()
+        self:UpdateLibSpecRegistration()
         if NSRT.PASounds.UseDefaultPASounds then self:ApplyDefaultPASounds() end
         if NSRT.PASounds.UseDefaultMPlusPASounds then self:ApplyDefaultPASounds(false, true) end
         for spellID, info in pairs(NSRT.PASounds) do
@@ -190,8 +191,6 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
     elseif e == "START_PLAYER_COUNTDOWN" and wowevent then -- do basically the same thing as ready check in case one of them is skipped
         if self.LastBroadcast and self.LastBroadcast > GetTime() - 30 then return end -- only do this if there was no recent ready check basically
         self.LastBroadcast = GetTime()
-        local specid = self:GetMySpecID()
-        self:Broadcast("NSI_SPEC", "RAID", specid)
         if UnitIsGroupLeader("player") and UnitInRaid("player") then
             local tosend = false
             if NSRT.ReminderSettings.AutoShare then
@@ -218,22 +217,8 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
             self:Broadcast("NSI_REM_SHARE", "RAID", tosend, NSRT.AssignmentSettings, false)
             self.Assignments = NSRT.AssignmentSettings
         end
-        -- broadcast spec info
-        local specid = self:GetMySpecID()
-        self:Broadcast("NSI_SPEC", "RAID", specid)
         if C_ChatInfo.InChatMessagingLockdown() then return end
         self.LastBroadcast = GetTime()
-        self.specs = {}
-        self.GUIDS = {}
-        self.HasNSRT = {}
-        for u in self:IterateGroupMembers() do
-            if UnitIsVisible(u) then
-                self.HasNSRT[u] = false
-                self.specs[u] = false
-                local G = UnitGUID(u)
-                self.GUIDS[u] = issecretvalue(G) and "" or G
-            end
-        end
         if self:Restricted() then return end
         if NSRT.Settings["CheckCooldowns"] and self:DifficultyCheck(15) and UnitInRaid("player") then -- only heroic& mythic because in normal you just wanna go fast and don't care about someone having a cd
             self:CheckCooldowns()
@@ -349,24 +334,9 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
                 self:NickNamesSyncPopup(unit, nicknametable)
             end
         end
-
-    elseif e == "NSI_SPEC" and internal then -- renamed for Midnight
-        local unit, spec = ...
-        self.specs = self.specs or {}
-        local G = UnitGUID(unit)
-        G = issecretvalue(G) and "" or G
-        self.specs[unit] = tonumber(spec)
-        self.HasNSRT = self.HasNSRT or {}
-        self.HasNSRT[unit] = true
-        if G ~= "" then
-            self.GUIDS = self.GUIDS or {}
-            self.GUIDS[unit] = G
-        end
-    elseif e == "NSI_SPEC_REQUEST" then
-        local specid = self:GetMySpecID()
-        self:Broadcast("NSI_SPEC", "RAID", specid)
     elseif e == "GROUP_ROSTER_UPDATE" and wowevent then
         self:ArrangeGroups()
+        self:UpdateLibSpecRegistration()
         if self.GroupUpdateTimer then self.GroupUpdateTimer:Cancel() end
         self.GroupUpdateTimer = C_Timer.After(2, function()
             self.GroupUpdateTimer = nil

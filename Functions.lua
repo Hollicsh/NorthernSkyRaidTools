@@ -81,12 +81,51 @@ end
 
 function NSI:GetSpecs(unit)
     if unit then
-        return NSI.specs[unit] or false -- return false if no information available for that unit so it goes to the next fallback
+        return self.specs[unit] or false -- return false if no information available for that unit so it goes to the next fallback
     else
-        return NSI.specs -- if no unit is given then entire table is requested
+        return self.specs -- if no unit is given then entire table is requested
     end
 end
 
+-- Registers or unregisters the LibSpecialization group callback depending on
+-- whether the player is currently in a raid. Called on login and GROUP_ROSTER_UPDATE.
+function NSI:UpdateLibSpecRegistration()
+    self.LS = self.LS or LibStub("LibSpecialization", true)
+    if not self.LS then return end
+
+    if UnitInRaid("player") then
+        if not self._libSpecRegistered then
+            self._libSpecRegistered = true
+            local _, myrealm = UnitFullName("player")
+            self.LS.RegisterGroup(self, function(specId, role, position, playerName)
+                self.specs = self.specs or {}
+                self.GUIDS = self.GUIDS or {}
+                local name, realm = strsplit("-", playerName)
+                if not realm then realm = myrealm end
+                local u
+                for unit in self:IterateGroupMembers() do
+                    local uname, urealm = UnitFullName(unit)
+                    if uname and uname == name and urealm and urealm == realm then
+                        u = unit
+                        break
+                    end
+                end
+                if u then
+                    self.specs[u] = specId
+                    local G = UnitGUID(u)
+                    self.GUIDS[u] = issecretvalue(G) and "" or G
+                end
+            end)
+        end
+    else
+        if self._libSpecRegistered then
+            self._libSpecRegistered = false
+            self.LS.UnregisterGroup(self)
+            self.specs = {}
+            self.GUIDS = {}
+        end
+    end
+end
 
 function NSI:GetNote() -- simply for note comparison now
     if not C_AddOns.IsAddOnLoaded("MRT") then
