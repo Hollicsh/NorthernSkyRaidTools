@@ -340,7 +340,21 @@ local function BuildEncounterAlertsOptions()
                 NSI:FireCallback("NSRT_ALERT_TOGGLE", 3183)
             end,
             nocombat = true,
-            icontexture = 7448204,
+            icontexture = 133241,
+            iconsize = {16, 16},
+        },
+        {
+            type = "toggle",
+            boxfirst = true,
+            name = "Interrupt Display",
+            desc = "Enables the Box for Interrupts in P1. This works exactly like the WA does.",
+            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].InterruptDisplay end,
+            set = function(self, fixedparam, value)
+                NSRT.EncounterAlerts[3183] = NSRT.EncounterAlerts[3183] or {}
+                NSRT.EncounterAlerts[3183].InterruptDisplay = value
+            end,
+            nocombat = true,
+            icontexture = 132938,
             iconsize = {16, 16},
         },
         {

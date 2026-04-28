@@ -378,6 +378,59 @@ function NSI:StopFrameMove(F, SettingsTable)
     SettingsTable.relativeTo = relativeTo
 end
 
+function NSI:MakeDraggable(frame, settingsTable, enable)
+    if not frame then return end
+
+    if enable then
+        -- Create the drag-border once
+        if not frame._dragBorder then
+            local b = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+            b:SetPoint("TOPLEFT",     frame, "TOPLEFT",     -8,  8)
+            b:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",  8, -8)
+            b:SetBackdrop({
+                bgFile   = "Interface\\Buttons\\WHITE8x8", tileSize = 0,
+                edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 2,
+            })
+            b:SetBackdropColor(0, 0, 0, 0)
+            b:SetBackdropBorderColor(1, 0.5, 0, 1)
+            b:SetFrameStrata("DIALOG")
+            frame._dragBorder = b
+        end
+
+        frame:SetMovable(true)
+        frame:EnableMouse(true)
+        frame:RegisterForDrag("LeftButton")
+        frame:SetClampedToScreen(true)
+        frame:SetFrameStrata("DIALOG")
+        frame._dragBorder:Show()
+        frame:Show()
+
+        frame:SetScript("OnDragStart", function(f) f:StartMoving() end)
+        frame:SetScript("OnDragStop", function(f)
+            f:StopMovingOrSizing()
+            local anchor, _, _, x, y = f:GetPoint()
+            settingsTable.XOffset      = Round(x)
+            settingsTable.YOffset      = Round(y)
+            settingsTable.Point        = anchor
+            settingsTable.RelativePoint = anchor
+        end)
+    else
+        -- Save position before locking
+        if frame:IsMovable() then
+            local anchor, _, _, x, y = frame:GetPoint()
+            settingsTable.XOffset      = Round(x)
+            settingsTable.YOffset      = Round(y)
+            settingsTable.Point        = anchor
+            settingsTable.RelativePoint = anchor
+        end
+        frame:SetMovable(false)
+        frame:EnableMouse(false)
+        frame:SetScript("OnDragStart", nil)
+        frame:SetScript("OnDragStop",  nil)
+        if frame._dragBorder then frame._dragBorder:Hide() end
+    end
+end
+
 function NSI:ToggleMoveFrames(F, Unlock)
     if not F then return end
     if Unlock then
@@ -485,4 +538,23 @@ end
 
 function NSI:GetMySpecID()
     return C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization()) or 0
+end
+
+function NSI:EncounterFrame(event, enable, units, all)
+    if not self.EncounterFrame then
+        self.EncounterFrame = CreateFrame("Frame")
+    end
+    if all then
+        self.EncounterFrame:UnregisterAllEvents()
+        return
+    end
+    if enable then
+        if units then
+            self.EncounterFrame:RegisterUnitEvent(event, unpack(units))
+        else
+            self.EncounterFrame:RegisterEvent(event)
+        end
+    else
+        self:UnregisterEvent(event)
+    end
 end

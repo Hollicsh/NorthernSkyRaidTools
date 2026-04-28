@@ -13,7 +13,7 @@ local TAB_HEADER_HEIGHT            = Core.TAB_HEADER_HEIGHT
 local tab_content_height           = Core.tab_content_height
 local authorsString                = Core.authorsString
 local options_text_template        = Core.options_text_template
-local options_dropdown_template = Core.options_dropdown_template
+local options_dropdown_template    = Core.options_dropdown_template
 local options_switch_template      = Core.options_switch_template
 local options_slider_template      = Core.options_slider_template
 local options_button_template      = Core.options_button_template
@@ -39,8 +39,10 @@ local BuildReminderCallback        = NSI.UI.Options.Reminders.BuildCallback
 local BuildReminderNoteCallback    = NSI.UI.Options.Reminders.BuildNoteCallback
 local BuildAssignmentsOptions      = NSI.UI.Options.Assignments.BuildOptions
 local BuildAssignmentsCallback     = NSI.UI.Options.Assignments.BuildCallback
-local BuildEncounterAlertsOptions = NSI.UI.Options.EncounterAlerts.BuildOptions
+local BuildEncounterAlertsOptions  = NSI.UI.Options.EncounterAlerts.BuildOptions
 local BuildEncounterAlertsCallback = NSI.UI.Options.EncounterAlerts.BuildCallback
+local BuildInterruptDisplayOptions = NSI.UI.Options.InterruptDisplay.BuildOptions
+local BuildInterruptDisplayCallback= NSI.UI.Options.InterruptDisplay.BuildCallback
 local BuildReadyCheckOptions       = NSI.UI.Options.ReadyCheck.BuildOptions
 local BuildRaidBuffMenu            = NSI.UI.Options.ReadyCheck.BuildRaidBuffMenu
 local BuildReadyCheckCallback      = NSI.UI.Options.ReadyCheck.BuildCallback
@@ -63,9 +65,10 @@ local TABS_GROUPS                  = {
     },
     {
         { name = "Reminders",       text = L["Reminders"] },
-        { name = "Reminders-Note",  text = L["Reminder Strings"] },
-        { name = "EncounterAlerts", text = L["Encounter Alerts"] },
-        { name = "Assignments",     text = L["Assignments"] },
+        { name = "Reminders-Note",  text = L["Note-Display"] },
+        { name = "EncounterAlerts",   text = L["Encounter Alerts"] },
+        { name = "InterruptDisplay", text = L["Interrupt Display"] },
+        { name = "Assignments",      text = L["Assignments"] },
     },
     {
         { name = "PrivateAura", text = L["Private Auras"] },
@@ -278,6 +281,7 @@ function NSUI:Init()
     local reminder_note_tab       = tabSystem:GetTabFrameByName("Reminders-Note")
     local assignments_tab         = tabSystem:GetTabFrameByName("Assignments")
     local encounteralerts_tab     = tabSystem:GetTabFrameByName("EncounterAlerts")
+    local interruptdisplay_tab    = tabSystem:GetTabFrameByName("InterruptDisplay")
     local readycheck_tab          = tabSystem:GetTabFrameByName("ReadyCheck")
     local privateaura_tab         = tabSystem:GetTabFrameByName("PrivateAura")
     local QoL_tab                 = tabSystem:GetTabFrameByName("QoL")
@@ -316,6 +320,7 @@ function NSUI:Init()
     local reminder_note_options1_table   = BuildReminderNoteOptions()
     local assignments_options1_table     = BuildAssignmentsOptions()
     local encounteralerts_options1_table = BuildEncounterAlertsOptions()
+    local interruptdisplay_options1_table= BuildInterruptDisplayOptions()
     local readycheck_options1_table      = BuildReadyCheckOptions()
     local RaidBuffMenu                   = BuildRaidBuffMenu()
     local privateaura_options1_table     = BuildPrivateAurasOptions()
@@ -331,6 +336,7 @@ function NSUI:Init()
     local reminder_note_callback         = BuildReminderNoteCallback()
     local assignments_callback           = BuildAssignmentsCallback()
     local encounteralerts_callback       = BuildEncounterAlertsCallback()
+    local interruptdisplay_callback      = BuildInterruptDisplayCallback()
     local readycheck_callback            = BuildReadyCheckCallback()
     local privateaura_callback           = BuildPrivateAurasCallback()
     local QoL_callback                   = BuildQoLCallback()
@@ -359,6 +365,9 @@ function NSUI:Init()
     DF:BuildMenu(encounteralerts_tab, encounteralerts_options1_table, 10, -10, tab_content_height, false,
         options_text_template, options_dropdown_template, options_switch_template, true, options_slider_template,
         options_button_template, encounteralerts_callback)
+    DF:BuildMenu(interruptdisplay_tab, interruptdisplay_options1_table, 10, -10, tab_content_height, false,
+        options_text_template, options_dropdown_template, options_switch_template, true, options_slider_template,
+        options_button_template, interruptdisplay_callback)
     DF:BuildMenu(readycheck_tab, readycheck_options1_table, 10, -10, tab_content_height, false, options_text_template,
         options_dropdown_template, options_switch_template, true, options_slider_template, options_button_template,
         readycheck_callback)

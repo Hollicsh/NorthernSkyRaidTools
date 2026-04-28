@@ -215,6 +215,49 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
         }
         self:AddRemindersFromTable(Alert, timers[id])
     end
+    if NSRT.EncounterAlerts[encID].InterruptsDisplay then
+        self:EncounterFrame("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
+        self:EncounterFrame("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
+        self:EncounterFrame("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
+        self:ReadInterruptNote(1)
+        self.EncounterFrame:SetScript("OnEvent", function(_, e, unit, ...)
+            if e == "UNIT_SPELLCAST_START" then
+                if self.Interrupts.myTrackedID and unit == "boss"..self.Interrupts.myTrackedID and UnitIsEnemy(unit, "player") then
+                    self:InterruptOnCastStart(true)
+                    if self.ResetTimer then
+                        self.ResetTimer:Cancel()
+                    end
+                    self.ResetTimer = C_Timer.NewTimer(15, function()
+                        self:ResetInterrupts()
+                    end)
+                end
+            elseif e == "UNIT_SPELLCAST_INTERRUPTED" then
+                if self.Interrupts.myTrackedID and unit == "boss"..self.Interrupts.myTrackedID and UnitIsEnemy(unit, "player") then
+                    self:OnInterrupt(true)
+                end
+            elseif e == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" then
+                if UnitExists("boss2") and UnitIsEnemy("boss2", "player") then
+                    if self.Interrupts.myTrackedID == 4 then
+                        if not (UnitExists("boss4")) then
+                            if UnitExists("boss3") then
+                                self.Interrupts.myTrackedID = 3
+                            else
+                                self.Interrupts.myTrackedID = 2
+                            end
+                        end
+                    elseif self.Interrupts.myTrackedID == 3 then
+                        if not (UnitExists("boss3")) then
+                            self.Interrupts.myTrackedID = 2
+                        end
+                    end
+                    return
+                end
+                if (not UnitExists("boss2")) or (not (UnitIsEnemy("boss2", "player"))) then
+                    self:ResetInterrupts()
+                end
+            end
+        end)
+    end
     if NSRT.EncounterAlerts[encID] and NSRT.EncounterAlerts[encID].RunesDisplay and (realpull or preview) then
 
         local isTank = UnitGroupRolesAssigned("player") == "TANK"
@@ -394,8 +437,10 @@ NSI.EncounterAlertStop[encID] = function(self, Alertcall) -- on ENCOUNTER_END
             end
             self.LuraRuneTimers = nil
         end
-        NSI.NSRTFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
+        self.NSRTFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
     end
+    self:HideInterrupt()
+    self:EncounterFrame(false, false, false, true)
 end
 
 local detectedDurations = {
@@ -433,6 +478,13 @@ NSI.DetectPhaseChange[encID] = function(self, e, info)
             self.Phase = newphase
             self:StartReminders(self.Phase)
             self.PhaseSwapTime = now
+            if self.Phase == 2 then
+                self:HideInterrupt()
+                self:EncounterFrame("UNIT_SPELLCAST_START", false)
+                self:EncounterFrame("UNIT_SPELLCAST_INTERRUPTED", false)
+                self:EncounterFrame("INSTANCE_ENCOUNTER_ENGAGE_UNIT", false)
+                if self.Interrupts then self.Interrupts.disabled = true end
+            end
             if self.Phase == 4 and difficultyID == 16 then
                 if self.LuraRunesFrame then
                     self.LuraRunesFrame:SetWidth(300)

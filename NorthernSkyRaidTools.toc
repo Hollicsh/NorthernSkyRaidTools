@@ -34,6 +34,7 @@ ReadyCheck.lua
 PrivateAura.lua
 QoL.lua
 Profiles.lua
+InterruptDisplay.lua
 
 # Encounter Alerts
 EncounterAlerts/MidnightS1/ImperatorAverzian.lua
@@ -72,6 +73,7 @@ UI/Options/Nicknames.lua
 UI/Options/Reminders.lua
 UI/Options/Assignments.lua
 UI/Options/EncounterAlerts.lua
+UI/Options/InterruptDisplay.lua
 UI/Options/ReadyCheck.lua
 UI/Options/PrivateAuras.lua
 UI/Options/QoL.lua
