@@ -505,6 +505,9 @@ local function BuildReminderScreen(personal, parentFrame)
         local bodyText = StripFirstLine(editor:GetText())
         local newName = screen.nameEntry and screen.nameEntry:GetText()
         if not newName or newName == "" then newName = screen.selectedName end
+        -- Capture the old encID before we overwrite the stored note, so we can clear
+        -- the ActivePersonalReminder slot if the boss assignment changes.
+        local oldEncID = personal and NSI:EncIDFromReminder(screen.selectedName, true) or nil
         local firstLine = BuildFirstLine(screen._metaBossEncID, newName, screen._metaDiff)
         local fullText = firstLine and (firstLine .. "\n" .. bodyText) or bodyText
         -- Update the editor so the new first line is visible
@@ -533,8 +536,17 @@ local function BuildReminderScreen(personal, parentFrame)
         end
         local isCurrentlyActive
         if personal then
-            local encID = NSI:EncIDFromReminder(screen.selectedName, true)
-            isCurrentlyActive = encID and NSI:GetActivePersonalReminders()[encID] == screen.selectedName
+            local newEncID = NSI:EncIDFromReminder(screen.selectedName, true)
+            local activeTable = NSI:GetActivePersonalReminders()
+            -- If the boss changed and this note was active under the old encID, migrate it
+            -- to the new encID (unless the new encID already has a different active note).
+            if oldEncID and oldEncID ~= newEncID and activeTable[oldEncID] == screen.selectedName then
+                activeTable[oldEncID] = nil
+                if newEncID and not activeTable[newEncID] then
+                    activeTable[newEncID] = screen.selectedName
+                end
+            end
+            isCurrentlyActive = newEncID and activeTable[newEncID] == screen.selectedName
         else
             isCurrentlyActive = NSRT[activeKey] == screen.selectedName
         end
