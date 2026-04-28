@@ -28,7 +28,7 @@ end
 
 function NSI:DisplayInterrupt(shouldHide)
     local unit = self.Interrupts.myTable[self.Interrupts.castCount]
-    local name = unit and UnitExists(unit) and NSAPI:Shorten(unit, 8, false, "GlobalNickNames", false, false) or ""
+    local name = unit and UnitExists(unit) and NSAPI:Shorten(unit, 12, false, "GlobalNickNames", false, false) or ""
     self:CreateInterruptDisplay()
     self.InterruptDisplay.Number:SetText(self.Interrupts.castCount or "")
     self.InterruptDisplay.Name:SetText(name)
