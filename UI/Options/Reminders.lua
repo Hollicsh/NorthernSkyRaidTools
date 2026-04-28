@@ -435,6 +435,19 @@ local function BuildReminderOptions()
             max = 30,
             nocombat = true,
         },
+        {
+            type = "range",
+            name = L["Icon-Zoom"],
+            desc = L["Zoom level of the Icons"],
+            get = function() return NSRT.ReminderSettings.IconSettings.Zoom or 0 end,
+            set = function(self, fixedparam, value)
+                NSRT.ReminderSettings.IconSettings.Zoom = value
+                NSI:UpdateExistingFrames()
+            end,
+            min = 0,
+            max = 100,
+            nocombat = true,
+        },
 
         {
             type = "label",

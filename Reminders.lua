@@ -367,7 +367,7 @@ function NSI:UpdateExistingFrames() -- called when user changes settings to not 
     local parent = self.ReminderText or {}
     for i=1, #parent do
         local F = parent[i]
-        if F and F:IsShown() then
+        if F then
             local s = NSRT.ReminderSettings.TextSettings
             F.Text:SetFont(self.LSM:Fetch("font", s.Font), s.FontSize, "OUTLINE")
             local anchor = s.CenterAligned and "CENTER" or "LEFT"
@@ -380,10 +380,12 @@ function NSI:UpdateExistingFrames() -- called when user changes settings to not 
     parent = self.ReminderIcon or {}
     for i=1, #parent do
         local F = parent[i]
-        if F and F:IsShown() then
+        if F then
             local s = NSRT.ReminderSettings.IconSettings
             F:SetSize(s.Width, s.Height)
             F.Icon:SetAllPoints(F)
+            local z = ((s.Zoom) * 0.5) / 100
+            F.Icon:SetTexCoord(z, 1 - z, z, 1 - z)
             F.Border:SetAllPoints(F)
             local anchor = NSRT.ReminderSettings.IconSettings.RightAlignedText and "RIGHT" or "LEFT"
             local relativePoint = NSRT.ReminderSettings.IconSettings.RightAlignedText and "LEFT" or "RIGHT"
@@ -404,7 +406,7 @@ function NSI:UpdateExistingFrames() -- called when user changes settings to not 
     parent = self.UnitIcon or {}
     for i=1, #parent do
         local F = parent[i]
-        if F and F:IsShown() then
+        if F then
             local s = NSRT.ReminderSettings.UnitIconSettings
             F:SetSize(s.Width, s.Height) -- not setting points in this one because this is repeated every time the frame is shown as it needs a new frame to anchor to anyway
         end
@@ -412,7 +414,7 @@ function NSI:UpdateExistingFrames() -- called when user changes settings to not 
     parent = self.ReminderBar or {}
     for i=1, #parent do
         local F = parent[i]
-        if F and F:IsShown() then
+        if F then
             local s = NSRT.ReminderSettings.BarSettings
             F:SetSize(s.Width, s.Height)
             F:SetStatusBarTexture(self.LSM:Fetch("statusbar", s.Texture))
@@ -588,6 +590,8 @@ function NSI:CreateIcon(info)
             self.ReminderIcon[i]:SetFrameStrata("HIGH")
             self.ReminderIcon[i].Icon = self.ReminderIcon[i]:CreateTexture(nil, "ARTWORK")
             self.ReminderIcon[i].Icon:SetAllPoints(self.ReminderIcon[i])
+            local z = ((s.Zoom) * 0.5) / 100
+            self.ReminderIcon[i].Icon:SetTexCoord(z, 1 - z, z, 1 - z)
             self.ReminderIcon[i].Border = CreateFrame("Frame", nil, self.ReminderIcon[i], "BackdropTemplate")
             self.ReminderIcon[i].Border:SetAllPoints(self.ReminderIcon[i])
             self.ReminderIcon[i].Border:SetBackdrop({

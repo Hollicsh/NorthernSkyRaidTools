@@ -190,6 +190,8 @@ L["Font Size of the Timer-Text"] = true
 L["Spacing between Icon reminders"] = true
 L["Icon-Glow"] = true
 L["At how many seconds you want the Icon to start glowing. 0 = disabled"] = true
+L["Icon-Zoom"] = true
+L["Zoom level of the Icons"] = true
 
 -- UI/Options/Reminders.lua — Bar Settings
 L["Bar Settings"] = true

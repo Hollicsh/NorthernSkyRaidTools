@@ -138,6 +138,7 @@ function NSI:AddMissingDefaults()
                 Height = 80,
                 Spacing = -1,
                 Glow = 0,
+                Zoom = 0,
             },
             BarSettings = {
                 GrowDirection = "Up",
