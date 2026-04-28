@@ -313,8 +313,12 @@ function NSI:ProcessReminder()
                     end)
                     local words = {}
                     for word in line:gmatch("[^%s]+") do
-                        local shortened = NSAPI:Shorten(NSAPI:GetChar(word, true), 12, false, "GlobalNickNames")
-                        table.insert(words, shortened)
+                        if word:match("^%u%a+$") and #word >= 2 and #word <= 12 then
+                            local shortened = NSAPI:Shorten(NSAPI:GetChar(word, true), 12, false, "GlobalNickNames")
+                            table.insert(words, shortened)
+                        else
+                            table.insert(words, word)
+                        end
                     end
                     extranote = extranote..table.concat(words, " ").."\n"
                 end
