@@ -1242,7 +1242,7 @@ end
 function NSI:GlowFrame(unit, id, F)
     if F then
         local s = NSRT.ReminderSettings.GlowSettings
-        self.LCG.ButtonGlow_Start(F)
+        self.LCG.ButtonGlow_Start(F, nil, 1000)
         return
     end
     local color = {0, 1, 0, 1}
@@ -1256,7 +1256,7 @@ function NSI:GlowFrame(unit, id, F)
     self.LCG.PixelGlow_Stop(F, id) -- hide any preivous glows first
     self.AllGlows[F] = id
     local s = NSRT.ReminderSettings.GlowSettings
-    self.LCG.PixelGlow_Start(F, s.colors, s.Lines, s.Frequency, s.Length, s.Thickness, s.xOffset, s.yOffset, true, id)
+    self.LCG.PixelGlow_Start(F, s.colors, s.Lines, s.Frequency, s.Length, s.Thickness, s.xOffset, s.yOffset, true, id, 1000)
 end
 
 function NSI:HideGlows(units, id, F)
