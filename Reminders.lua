@@ -1242,7 +1242,7 @@ end
 function NSI:GlowFrame(unit, id, F)
     if F then
         local s = NSRT.ReminderSettings.GlowSettings
-        self.LCG.ButtonGlow_Start(F, nil, 1000)
+        self.LCG.ButtonGlow_Start(F, nil, nil, 1000)
         return
     end
     local color = {0, 1, 0, 1}
