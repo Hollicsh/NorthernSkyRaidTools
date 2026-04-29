@@ -215,7 +215,7 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
         }
         self:AddRemindersFromTable(Alert, timers[id])
     end
-    if NSRT.EncounterAlerts[encID].InterruptsDisplay then
+    if NSRT.EncounterAlerts[encID].InterruptsDisplay and realpull then
         self:EncounterRegister("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
