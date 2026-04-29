@@ -17,12 +17,12 @@ function NSI:CreateInterruptDisplay()
     end
     self.InterruptDisplay:ClearAllPoints()
     self.InterruptDisplay:SetSize(NSRT.InterruptSettings.Width, NSRT.InterruptSettings.Height)
-    self.InterruptDisplay:SetPoint(NSRT.InterruptSettings.Point, NSI.NSRTFrame, NSRT.InterruptSettings.RelativePoint, NSRT.InterruptSettings.XOffset, NSRT.InterruptSettings.YOffset)
+    self.InterruptDisplay:SetPoint(NSRT.InterruptSettings.Anchor, NSI.NSRTFrame, NSRT.InterruptSettings.relativeTo, NSRT.InterruptSettings.xOffset, NSRT.InterruptSettings.yOffset)
     self.InterruptDisplay.Number:ClearAllPoints()
-    self.InterruptDisplay.Number:SetPoint(NSRT.InterruptSettings.NumberPoint, self.InterruptDisplay, NSRT.InterruptSettings.NumberRelativePoint, NSRT.InterruptSettings.NumberXOffset, NSRT.InterruptSettings.NumberYOffset)
+    self.InterruptDisplay.Number:SetPoint(NSRT.InterruptSettings.NumberAnchor, self.InterruptDisplay, NSRT.InterruptSettings.NumberRelativeTo, NSRT.InterruptSettings.NumberxOffset, NSRT.InterruptSettings.NumberyOffset)
     self.InterruptDisplay.Number:SetFont(self.LSM:Fetch("font", NSRT.InterruptSettings.NumberFont), NSRT.InterruptSettings.NumberFontSize, NSRT.InterruptSettings.NumberFontFlags)
     self.InterruptDisplay.Name:ClearAllPoints()
-    self.InterruptDisplay.Name:SetPoint(NSRT.InterruptSettings.NamePoint, self.InterruptDisplay, NSRT.InterruptSettings.NameRelativePoint, NSRT.InterruptSettings.NameXOffset, NSRT.InterruptSettings.NameYOffset)
+    self.InterruptDisplay.Name:SetPoint(NSRT.InterruptSettings.NameAnchor, self.InterruptDisplay, NSRT.InterruptSettings.NameRelativeTo, NSRT.InterruptSettings.NamexOffset, NSRT.InterruptSettings.NameyOffset)
     self.InterruptDisplay.Name:SetFont(self.LSM:Fetch("font", NSRT.InterruptSettings.NameFont), NSRT.InterruptSettings.NameFontSize, NSRT.InterruptSettings.NameFontFlags)
 end
 
