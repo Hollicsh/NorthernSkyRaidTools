@@ -540,9 +540,9 @@ function NSI:GetMySpecID()
     return C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization()) or 0
 end
 
-function NSI:EncounterFrame(event, enable, units, all)
+function NSI:EncounterRegister(event, enable, units, all)
     if not self.EncounterFrame then
-        self.EncounterFrame = CreateFrame("Frame")
+        self.EncounterFrame = CreateFrame("Frame", nil, self.NSRTFrame)
     end
     if all then
         self.EncounterFrame:UnregisterAllEvents()

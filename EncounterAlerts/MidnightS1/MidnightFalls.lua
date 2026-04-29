@@ -216,9 +216,9 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
         self:AddRemindersFromTable(Alert, timers[id])
     end
     if NSRT.EncounterAlerts[encID].InterruptsDisplay then
-        self:EncounterFrame("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
-        self:EncounterFrame("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
-        self:EncounterFrame("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
+        self:EncounterRegister("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
+        self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
+        self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
         self:ReadInterruptNote(1)
         self.EncounterFrame:SetScript("OnEvent", function(_, e, unit, ...)
             if e == "UNIT_SPELLCAST_START" then
@@ -440,7 +440,7 @@ NSI.EncounterAlertStop[encID] = function(self, Alertcall) -- on ENCOUNTER_END
         self.NSRTFrame:UnregisterEvent("INSTANCE_ENCOUNTER_ENGAGE_UNIT")
     end
     self:HideInterrupt()
-    self:EncounterFrame(false, false, false, true)
+    self:EncounterRegister(false, false, false, true)
 end
 
 local detectedDurations = {
@@ -480,9 +480,9 @@ NSI.DetectPhaseChange[encID] = function(self, e, info)
             self.PhaseSwapTime = now
             if self.Phase == 2 then
                 self:HideInterrupt()
-                self:EncounterFrame("UNIT_SPELLCAST_START", false)
-                self:EncounterFrame("UNIT_SPELLCAST_INTERRUPTED", false)
-                self:EncounterFrame("INSTANCE_ENCOUNTER_ENGAGE_UNIT", false)
+                self:EncounterRegister("UNIT_SPELLCAST_START", false)
+                self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", false)
+                self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", false)
                 if self.Interrupts then self.Interrupts.disabled = true end
             end
             if self.Phase == 4 and difficultyID == 16 then
