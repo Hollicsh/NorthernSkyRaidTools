@@ -215,7 +215,7 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
         }
         self:AddRemindersFromTable(Alert, timers[id])
     end
-    if NSRT.EncounterAlerts[encID].InterruptsDisplay and realpull then
+    if NSRT.EncounterAlerts[encID].InterruptsDisplay and realpull and id == 16 then
         self:EncounterRegister("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
@@ -479,7 +479,7 @@ NSI.DetectPhaseChange[encID] = function(self, e, info)
             self.Phase = newphase
             self:StartReminders(self.Phase)
             self.PhaseSwapTime = now
-            if self.Phase == 2 then
+            if self.Phase == 2 and difficultyID == 16 then
                 self:HideInterrupt()
                 self:EncounterRegister("UNIT_SPELLCAST_START", false)
                 self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", false)
