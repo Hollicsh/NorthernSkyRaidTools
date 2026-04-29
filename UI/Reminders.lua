@@ -443,8 +443,16 @@ local function BuildReminderScreen(personal, parentFrame)
             NSRT.InviteList[newname] = NSRT.InviteList[oldname]
             NSRT.InviteList[oldname] = nil
         end
-        if NSRT[activeKey] == oldname then NSRT[activeKey] = newname end
-        local renameEncID = ParseFirstLine(oldContent)
+        if personal then
+            for _, charTable in pairs(NSRT.ActivePersonalReminder or {}) do
+                for encID, name in pairs(charTable) do
+                    if name == oldname then charTable[encID] = newname end
+                end
+            end
+        else
+            if NSRT[activeKey] == oldname then NSRT[activeKey] = newname end
+        end
+        local renameEncID = encID  -- encID was already parsed from oldContent above
         if renameEncID and NSRT.AutoLoadNote and NSRT.AutoLoadNote[renameEncID] == oldname then
             NSRT.AutoLoadNote[renameEncID] = newname
         end
@@ -522,7 +530,15 @@ local function BuildReminderScreen(personal, parentFrame)
                     NSRT.InviteList[newName] = NSI:InviteListFromReminder(fullText)
                     NSRT.InviteList[oldName] = nil
                 end
-                if NSRT[activeKey] == oldName then NSRT[activeKey] = newName end
+                if personal then
+                    for _, charTable in pairs(NSRT.ActivePersonalReminder or {}) do
+                        for encID, name in pairs(charTable) do
+                            if name == oldName then charTable[encID] = newName end
+                        end
+                    end
+                else
+                    if NSRT[activeKey] == oldName then NSRT[activeKey] = newName end
+                end
                 local saveEncID = screen._metaBossEncID
                 if saveEncID and NSRT.AutoLoadNote and NSRT.AutoLoadNote[saveEncID] == oldName then
                     NSRT.AutoLoadNote[saveEncID] = newName
@@ -998,10 +1014,16 @@ local function BuildReminderScreen(personal, parentFrame)
                 NSRT.InviteList[newname] = NSRT.InviteList[oldname]
                 NSRT.InviteList[oldname] = nil
             end
-            if NSRT[activeKey] == oldname then
-                NSRT[activeKey] = newname
+            if personal then
+                for _, charTable in pairs(NSRT.ActivePersonalReminder or {}) do
+                    for eid, name in pairs(charTable) do
+                        if name == oldname then charTable[eid] = newname end
+                    end
+                end
+            else
+                if NSRT[activeKey] == oldname then NSRT[activeKey] = newname end
             end
-            local encID = ParseFirstLine(store[oldname] or "")
+            local encID = ParseFirstLine(store[oldname] or "")  -- read before nil-ing
             if encID and NSRT.AutoLoadNote and NSRT.AutoLoadNote[encID] == oldname then
                 NSRT.AutoLoadNote[encID] = newname
             end
