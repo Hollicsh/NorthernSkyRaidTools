@@ -55,7 +55,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         self:CacheSounds()
         self.NSRTFrame:SetAllPoints(UIParent)
         local MyFrame = self.LGF.GetUnitFrame("player") -- need to call this once to init the library properly I think
-        self:InitPrivateAuras()
+        self:InitPrivateAuras(true)
         self:UpdateLibSpecRegistration()
         if NSRT.PASounds.UseDefaultPASounds then self:ApplyDefaultPASounds() end
         if NSRT.PASounds.UseDefaultMPlusPASounds then self:ApplyDefaultPASounds(false, true) end
@@ -133,7 +133,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         if self.AddAssignments[self.EncounterID] then self.AddAssignments[self.EncounterID](self) end
         if self.EncounterAlertStart[self.EncounterID] then self.EncounterAlertStart[self.EncounterID](self) end
         self:StartReminders(self.Phase)
-        self:InitPrivateAuras(true)
+        self:InitPrivateAuras()
         if NSRT.ReminderSettings.NoteCountdown then
             local frames = {"ReminderFrame", "PersonalReminderFrame"}
             for i, name in ipairs(frames) do
@@ -157,9 +157,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         local diff = select(3, GetInstanceInfo()) or 0
         self.CustomEvents = {}
         if (diff < 14 or diff > 17) and diff ~= 220 then return end
-        if NSRT.PATankSettings.enabled and UnitGroupRolesAssigned("player") == "TANK" then
-            self:RemoveTankPA()
-        end
+        self:InitPrivateAuras()
         self:HideAllReminders(true)
         C_Timer.After(1, function()
             if self:Restricted() then return end
@@ -200,7 +198,6 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
             self:Broadcast("NSI_REM_SHARE", "RAID", tosend, NSRT.AssignmentSettings, false)
             self.Assignments = NSRT.AssignmentSettings
         end
-        self:InitPrivateAuras()
     elseif e == "READY_CHECK" and wowevent then
         self.ProcessDone = false
         local diff= select(3, GetInstanceInfo()) or 0
@@ -245,7 +242,6 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
             self:UpdateReminderFrame(true)
         end
         local diff = select(3, GetInstanceInfo()) or 0
-        self:InitPrivateAuras()
         local text = ""
         if UnitLevel("player") < 90 then return end
         if NSRT.ReadyCheckSettings.RaidBuffCheck and not self:Restricted() then

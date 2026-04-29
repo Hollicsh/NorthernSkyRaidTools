@@ -263,6 +263,8 @@ function NSI:QoLOnZoneSwap() -- only register events while player is in raid
 end
 
 function NSI:HasLustDebuff()
+    if self:Restricted() then return false end
+    if not self:DifficultyCheck(14) then return false end
     for _, spellID in ipairs(LustDebuffs) do
         local debuff = self:UnitAura("player", spellID)
         if (not issecretvalue(debuff)) and debuff then
