@@ -113,7 +113,7 @@ function NSI:EventHandler(e, wowevent, internal, ...) -- internal checks whether
         self.TestingReminder = false
         self.IsInPreview = false
         for _, v in ipairs({"IconMover", "BarMover", "TextMover"}) do
-            self:ToggleMoveFrames(self[v], false)
+            self:MakeDraggable(self[v], nil, false)
         end
         self.Phase = 1
         self.PhaseSwapTime = GetTime()

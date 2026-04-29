@@ -168,19 +168,6 @@ function NSI:InitTextPA()
         self.PATextMoverFrame.Text:SetText("<secret value> targets you with the spell <secret value>")
         self.PATextMoverFrame:SetSize(self.PATextMoverFrame.Text:GetStringWidth()*1, self.PATextMoverFrame.Text:GetStringHeight()*1.5)
         self.PATextMoverFrame.Text:SetPoint("CENTER", self.PATextMoverFrame, "CENTER", 0, 0)
-
-        if not self.PATextMoverFrame.Border then
-            self.PATextMoverFrame.Border = CreateFrame("Frame", nil, self.PATextMoverFrame, "BackdropTemplate")
-            self.PATextMoverFrame.Border:SetPoint("TOPLEFT", self.PATextMoverFrame, "TOPLEFT", -6, 6)
-            self.PATextMoverFrame.Border:SetPoint("BOTTOMRIGHT", self.PATextMoverFrame, "BOTTOMRIGHT", 6, -6)
-            self.PATextMoverFrame.Border:SetBackdrop({
-                    edgeFile = "Interface\\Buttons\\WHITE8x8",
-                    edgeSize = 2,
-                })
-            self.PATextMoverFrame.Border:SetBackdropBorderColor(1, 1, 1, 1)
-        end
-        self:ToggleMoveFrames(self.PATextMoverFrame, true)
-        self.PATextMoverFrame.Border:Hide()
         self.PATextMoverFrame:Hide()
         self.PATextMoverFrame:SetScript("OnDragStart", function(self)
             self:StartMoving()
@@ -627,8 +614,8 @@ function NSI:PreviewPA(Show)
     if not self.PATextMoverFrame then self:InitTextPA() end
     if not Show then
         if self.PAFrames[1].Border then self.PAFrames[1].Border:Hide() end
-        self:ToggleMoveFrames(self.PATextMoverFrame, false)
-        self:ToggleMoveFrames(self.PAFrames[1], false)
+        self:MakeDraggable(self.PATextMoverFrame, NSRT.PATextSettings, false)
+        self:MakeDraggable(self.PAFrames[1], NSRT.PASettings, false)
         self.PATextMoverFrame:Hide()
         self.PAFrames[1]:SetSize(1, 1)
         self:InitPA()
@@ -655,8 +642,8 @@ function NSI:PreviewPA(Show)
         self.PAFrames[1].Border:Hide()
     end
 
-    self:ToggleMoveFrames(self.PATextMoverFrame, true)
-    self:ToggleMoveFrames(self.PAFrames[1], true)
+    self:MakeDraggable(self.PATextMoverFrame, NSRT.PATextSettings, true)
+    self:MakeDraggable(self.PAFrames[1], NSRT.PASettings, true)
     self.PATextMoverFrame:Show()
     self.PATextMoverFrame.Border:Show()
     self.PATextMoverFrame.Text:Show()
@@ -702,7 +689,7 @@ function NSI:PreviewTankPA(Show)
     end
     if not Show then
         if self.PATankFrames[1][1].Border then self.PATankFrames[1][1].Border:Hide() end
-        self:ToggleMoveFrames(self.PATankFrames[1][1], false)
+        self:MakeDraggable(self.PATankFrames[1][1], NSRT.PATankSettings, false)
         self.PATankFrames[1][1]:SetSize(1, 1)
         if self.PATankPreviewIcons then
             for _, icon in ipairs(self.PATankPreviewIcons) do
@@ -731,7 +718,7 @@ function NSI:PreviewTankPA(Show)
         self.PATankFrames[1][1].Border:Hide()
     end
 
-    self:ToggleMoveFrames(self.PATankFrames[1][1], true)
+    self:MakeDraggable(self.PATankFrames[1][1], NSRT.PATankSettings, true)
     self.PATankFrames[1][1]:SetScript("OnDragStart", function(self)
         self:StartMoving()
     end)

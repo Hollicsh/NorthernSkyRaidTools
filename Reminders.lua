@@ -1296,7 +1296,6 @@ function NSI:CreateReminderMoverFrame(Name, SettingsTable, SettingsName, IsText)
             self[Name].Text:SetPoint("LEFT", self[Name], "LEFT", 0, 0)
             self[Name].Text:SetTextColor(1, 1, 1, 0)
         end
-        self:MoveFrameInit(self[Name], SettingsName)
         self:MoveFrameSettings(self[Name], SettingsTable, IsText)
     else
         self:MoveFrameSettings(self[Name], SettingsTable, IsText)
@@ -1311,7 +1310,7 @@ function NSI:CreateNoteMoverFrame(Name, SettingsTable, Shared, Personal, Extra)
         self:MoveFrameSettings(self[Name.."Mover"], SettingsTable)
         if SettingsTable.enabled and SettingsTable.Moveable then
             self:UpdateReminderFrame(false, Shared, Personal, Extra)
-            self:ToggleMoveFrames(self[Name.."Mover"], true)
+            self:MakeDraggable(self[Name.."Mover"], SettingsTable, false, true)
             self[Name.."Mover"].Resizer:Show()
             self[Name.."Mover"]:SetResizable(true)
             self[Name.."Mover"]:SetResizeBounds(100, 100, 2000, 2000)
@@ -1349,16 +1348,8 @@ function NSI:MoveFrameInit(F, s, ReminderColor)
         if ReminderColor then F.Border:SetBackdropBorderColor(1, 1, 1, 0) else F.Border:SetBackdropBorderColor(1, 1, 1, 1) end
         if ReminderColor then F.Border:SetBackdropColor(unpack(ReminderColor)) else F.Border:SetBackdropColor(0, 0, 0, 0) end
         F.Border:Hide()
-        F:SetFrameStrata(ReminderColor and "BACKGROUND" or "DIALOG")
-        F.Border:SetFrameStrata(ReminderColor and "BACKGROUND" or "DIALOG")
-        F:SetScript("OnDragStart", function(self)
-            self:StartMoving()
-        end)
-        F:SetScript("OnDragStop", function(Frame)
-            local settingsTable = s == "Generic" and NSRT.Settings.GenericDisplay or NSRT.ReminderSettings[s]
-            self:StopFrameMove(Frame, settingsTable)
-            if (not ReminderColor) and not (s == "Generic") then self:UpdateExistingFrames() end
-        end)
+        F:SetFrameStrata("BACKGROUND")
+        F.Border:SetFrameStrata("BACKGROUND")
     end
 end
 

@@ -299,7 +299,6 @@ function NSUI:Init()
     NSI.NSRTFrame.generic_display.Text:SetJustifyH("LEFT")
     NSI.NSRTFrame.generic_display.Text:SetText("Things that might be displayed here:\nReady Check Module\nAssignments on Pull\n")
     NSI.NSRTFrame.generic_display:SetSize(NSI.NSRTFrame.generic_display.Text:GetStringWidth(), NSI.NSRTFrame.generic_display.Text:GetStringHeight())
-    NSI:MoveFrameInit(NSI.NSRTFrame.generic_display, "Generic")
 
     NSI.NSRTFrame.SecretDisplay = CreateFrame("Frame", nil, NSI.NSRTFrame, "BackdropTemplate")
     NSI.NSRTFrame.SecretDisplay:Hide()

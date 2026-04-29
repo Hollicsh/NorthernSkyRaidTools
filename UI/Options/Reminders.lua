@@ -724,10 +724,11 @@ local function BuildReminderOptions()
                     NSI.IsInPreview = false
                     NSI:HideAllReminders()
                     for _, v in ipairs({"IconMover", "BarMover", "TextMover"}) do
+                        local settings = v == "IconMover" and NSRT.ReminderSettings.IconSettings or v == "BarMover" and NSRT.ReminderSettings.BarSettings or NSRT.ReminderSettings.TextSettings
                         if NSI[v] then
                             NSI[v]:StopMovingOrSizing()
                         end
-                        NSI:ToggleMoveFrames(NSI[v], false)
+                        NSI:MakeDraggable(NSI[v], settings, false)
                     end
                     return
                 end
@@ -736,16 +737,18 @@ local function BuildReminderOptions()
                         NSI.IsInPreview = false
                         NSI:HideAllReminders()
                         for _, v in ipairs({"IconMover", "BarMover", "TextMover"}) do
+                            local settings = v == "IconMover" and NSRT.ReminderSettings.IconSettings or v == "BarMover" and NSRT.ReminderSettings.BarSettings or NSRT.ReminderSettings.TextSettings
                             if NSI[v] then
                                 NSI[v]:StopMovingOrSizing()
                             end
-                            NSI:ToggleMoveFrames(NSI[v], false)
+                            NSI:MakeDraggable(NSI[v], settings, false)
                         end
                     end
                 end)
                 NSI.IsInPreview = true
                 for _, v in ipairs({"IconMover", "BarMover", "TextMover"}) do
-                    NSI:ToggleMoveFrames(NSI[v], true)
+                    local settings = v == "IconMover" and NSRT.ReminderSettings.IconSettings or v == "BarMover" and NSRT.ReminderSettings.BarSettings or NSRT.ReminderSettings.TextSettings
+                    NSI:MakeDraggable(NSI[v], settings, true)
                 end
                 NSI.AllGlows = NSI.AllGlows or {}
                 local MyFrame = NSI.LGF.GetUnitFrame("player")
@@ -932,13 +935,13 @@ local function BuildReminderNoteOptions()
             func = function(self)
                 if NSI.ReminderFrameMover and NSI.ReminderFrameMover:IsMovable() then
                     NSI:UpdateReminderFrame(false, true)
-                    NSI:ToggleMoveFrames(NSI.ReminderFrameMover, false)
+                    NSI:MakeDraggable(NSI.ReminderFrameMover, NSRT.ReminderSettings.ReminderFrame, false, true)
                     NSI.ReminderFrameMover.Resizer:Hide()
                     NSI.ReminderFrameMover:SetResizable(false)
                     NSRT.ReminderSettings.ReminderFrame.Moveable = false
                 else
                     NSI:UpdateReminderFrame(false, true)
-                    NSI:ToggleMoveFrames(NSI.ReminderFrameMover, true)
+                    NSI:MakeDraggable(NSI.ReminderFrameMover, NSRT.ReminderSettings.ReminderFrame, true, true)
                     NSI.ReminderFrameMover.Resizer:Show()
                     NSI.ReminderFrameMover:SetResizable(true)
                     NSI.ReminderFrameMover:SetResizeBounds(100, 100, 2000, 2000)
@@ -1107,13 +1110,13 @@ local function BuildReminderNoteOptions()
             func = function(self)
                 if NSI.PersonalReminderFrameMover and NSI.PersonalReminderFrameMover:IsMovable() then
                     NSI:UpdateReminderFrame(false, false, true)
-                    NSI:ToggleMoveFrames(NSI.PersonalReminderFrameMover, false)
+                    NSI:MakeDraggable(NSI.PersonalReminderFrameMover, NSRT.ReminderSettings.PersonalReminderFrame, false, true)
                     NSI.PersonalReminderFrameMover.Resizer:Hide()
                     NSI.PersonalReminderFrameMover:SetResizable(false)
                     NSRT.ReminderSettings.PersonalReminderFrame.Moveable = false
                 else
                     NSI:UpdateReminderFrame(false, false, true)
-                    NSI:ToggleMoveFrames(NSI.PersonalReminderFrameMover, true)
+                    NSI:MakeDraggable(NSI.PersonalReminderFrameMover, NSRT.ReminderSettings.PersonalReminderFrame, true, true)
                     NSI.PersonalReminderFrameMover.Resizer:Show()
                     NSI.PersonalReminderFrameMover:SetResizable(true)
                     NSI.PersonalReminderFrameMover:SetResizeBounds(100, 100, 2000, 2000)
@@ -1234,13 +1237,13 @@ local function BuildReminderNoteOptions()
             func = function(self)
                 if NSI.ExtraReminderFrameMover and NSI.ExtraReminderFrameMover:IsMovable() then
                     NSI:UpdateReminderFrame(false, false, false, true)
-                    NSI:ToggleMoveFrames(NSI.ExtraReminderFrameMover, false)
+                    NSI:MakeDraggable(NSI.ExtraReminderFrameMover, NSRT.ReminderSettings.ExtraReminderFrame, false, true)
                     NSI.ExtraReminderFrameMover.Resizer:Hide()
                     NSI.ExtraReminderFrameMover:SetResizable(false)
                     NSRT.ReminderSettings.ExtraReminderFrame.Moveable = false
                 else
                     NSI:UpdateReminderFrame(false, false, false, true)
-                    NSI:ToggleMoveFrames(NSI.ExtraReminderFrameMover, true)
+                    NSI:MakeDraggable(NSI.ExtraReminderFrameMover, NSRT.ReminderSettings.ExtraReminderFrame, true, true)
                     NSI.ExtraReminderFrameMover.Resizer:Show()
                     NSI.ExtraReminderFrameMover:SetResizable(true)
                     NSI.ExtraReminderFrameMover:SetResizeBounds(100, 100, 2000, 2000)
