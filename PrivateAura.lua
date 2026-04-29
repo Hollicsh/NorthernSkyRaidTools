@@ -613,7 +613,6 @@ function NSI:PreviewPA(Show)
     if not self.PAFrames then self:InitPA() end
     if not self.PATextMoverFrame then self:InitTextPA() end
     if not Show then
-        if self.PAFrames[1].Border then self.PAFrames[1].Border:Hide() end
         self:MakeDraggable(self.PATextMoverFrame, NSRT.PATextSettings, false)
         self:MakeDraggable(self.PAFrames[1], NSRT.PASettings, false)
         self.PATextMoverFrame:Hide()
@@ -630,26 +629,13 @@ function NSI:PreviewPA(Show)
     self.PAFrames[1]:SetSize((NSRT.PASettings.Width), (NSRT.PASettings.Height))
     self.PAFrames[1]:SetScale(1)
     self.PAFrames[1]:SetPoint(NSRT.PASettings.Anchor, self.NSRTFrame, NSRT.PASettings.relativeTo, NSRT.PASettings.xOffset, NSRT.PASettings.yOffset)
-    if not self.PAFrames[1].Border then
-        self.PAFrames[1].Border = CreateFrame("Frame", nil, self.PAFrames[1], "BackdropTemplate")
-        self.PAFrames[1].Border:SetPoint("TOPLEFT", self.PAFrames[1], "TOPLEFT", -6, 6)
-        self.PAFrames[1].Border:SetPoint("BOTTOMRIGHT", self.PAFrames[1], "BOTTOMRIGHT", 6, -6)
-        self.PAFrames[1].Border:SetBackdrop({
-                edgeFile = "Interface\\Buttons\\WHITE8x8",
-                edgeSize = 2,
-            })
-        self.PAFrames[1].Border:SetBackdropBorderColor(1, 1, 1, 1)
-        self.PAFrames[1].Border:Hide()
-    end
 
     self:MakeDraggable(self.PATextMoverFrame, NSRT.PATextSettings, true)
     self:MakeDraggable(self.PAFrames[1], NSRT.PASettings, true)
     self.PATextMoverFrame:Show()
-    self.PATextMoverFrame.Border:Show()
     self.PATextMoverFrame.Text:Show()
     self.PATextMoverFrame.Text:SetFont(self.LSM:Fetch("font", NSRT.Settings.GlobalFont), NSRT.PATextSettings.Scale*20, "OUTLINE")
     self.PATextMoverFrame:SetSize(self.PATextMoverFrame.Text:GetStringWidth()*1, self.PATextMoverFrame.Text:GetStringHeight()*1.5)
-    self.PAFrames[1].Border:Show()
     self.PAFrames[1]:SetScript("OnDragStart", function(self)
         self:StartMoving()
     end)
@@ -688,7 +674,6 @@ function NSI:PreviewTankPA(Show)
         self.PATankFrames[1][1]:SetPoint(NSRT.PATankSettings.Anchor, self.NSRTFrame, NSRT.PATankSettings.relativeTo, NSRT.PATankSettings.xOffset, NSRT.PATankSettings.yOffset)
     end
     if not Show then
-        if self.PATankFrames[1][1].Border then self.PATankFrames[1][1].Border:Hide() end
         self:MakeDraggable(self.PATankFrames[1][1], NSRT.PATankSettings, false)
         self.PATankFrames[1][1]:SetSize(1, 1)
         if self.PATankPreviewIcons then
@@ -706,17 +691,6 @@ function NSI:PreviewTankPA(Show)
     self.PATankFrames[1][1]:SetSize(NSRT.PATankSettings.Width, NSRT.PATankSettings.Height)
     self.PATankFrames[1][1]:ClearAllPoints()
     self.PATankFrames[1][1]:SetPoint(NSRT.PATankSettings.Anchor, self.NSRTFrame, NSRT.PATankSettings.relativeTo, NSRT.PATankSettings.xOffset, NSRT.PATankSettings.yOffset)
-    if not self.PATankFrames[1][1].Border then
-        self.PATankFrames[1][1].Border = CreateFrame("Frame", nil, self.PATankFrames[1][1], "BackdropTemplate")
-        self.PATankFrames[1][1].Border:SetPoint("TOPLEFT", self.PATankFrames[1][1], "TOPLEFT", -6, 6)
-        self.PATankFrames[1][1].Border:SetPoint("BOTTOMRIGHT", self.PATankFrames[1][1], "BOTTOMRIGHT", 6, -6)
-        self.PATankFrames[1][1].Border:SetBackdrop({
-                edgeFile = "Interface\\Buttons\\WHITE8x8",
-                edgeSize = 2,
-            })
-        self.PATankFrames[1][1].Border:SetBackdropBorderColor(1, 1, 1, 1)
-        self.PATankFrames[1][1].Border:Hide()
-    end
 
     self:MakeDraggable(self.PATankFrames[1][1], NSRT.PATankSettings, true)
     self.PATankFrames[1][1]:SetScript("OnDragStart", function(self)
