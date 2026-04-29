@@ -407,22 +407,9 @@ function NSI:MakeDraggable(frame, settingsTable, enable)
 
         frame:SetScript("OnDragStart", function(f) f:StartMoving() end)
         frame:SetScript("OnDragStop", function(f)
-            f:StopMovingOrSizing()
-            local anchor, _, _, x, y = f:GetPoint()
-            settingsTable.XOffset      = Round(x)
-            settingsTable.YOffset      = Round(y)
-            settingsTable.Point        = anchor
-            settingsTable.RelativePoint = anchor
+            self:StopFrameMove(f, settingsTable)
         end)
     else
-        -- Save position before locking
-        if frame:IsMovable() then
-            local anchor, _, _, x, y = frame:GetPoint()
-            settingsTable.XOffset      = Round(x)
-            settingsTable.YOffset      = Round(y)
-            settingsTable.Point        = anchor
-            settingsTable.RelativePoint = anchor
-        end
         frame:SetMovable(false)
         frame:EnableMouse(false)
         frame:SetScript("OnDragStart", nil)

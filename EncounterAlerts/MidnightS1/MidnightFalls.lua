@@ -360,10 +360,11 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
             end
         end)
         self.LuraRunesFrame:ClearAllPoints()
-        self.LuraRunesFrame:SetPoint(NSRT.EncounterAlerts[encID].LuraDisplayAnchor or "TOPLEFT", self.NSRTFrame, NSRT.EncounterAlerts[encID].LuraDisplayRelativePoint or "TOPLEFT", NSRT.EncounterAlerts[encID].LuraDisplayOffsetX or 500, NSRT.EncounterAlerts[encID].LuraDisplayOffsetY or -300)
+        self.LuraRunesFrame:SetScale(NSRT.EncounterAlerts[encID].LuraDisplay.Scale or 1)
+        self.LuraRunesFrame:SetPoint(NSRT.EncounterAlerts[encID].LuraDisplay.Anchor, self.NSRTFrame, NSRT.EncounterAlerts[encID].LuraDisplay.relativeTo, NSRT.EncounterAlerts[encID].LuraDisplay.xOffset, NSRT.EncounterAlerts[encID].LuraDisplay.yOffset)
         self.LuraRunesFrame:SetBackdrop({bgFile = [[Interface\Buttons\WHITE8X8]], edgeFile = [[Interface\Buttons\WHITE8X8]], edgeSize = 1})
-        self.LuraRunesFrame:SetBackdropColor(unpack(NSRT.EncounterAlerts[encID].LuraDisplayColor or {0.5, 0.5, 0.5, 0.9}))
-        self.LuraRunesFrame:SetBackdropBorderColor(unpack(NSRT.EncounterAlerts[encID].LuraDisplayColor or {0.5, 0.5, 0.5, 0.9}))
+        self.LuraRunesFrame:SetBackdropColor(unpack(NSRT.EncounterAlerts[encID].LuraDisplay.Color or {0.5, 0.5, 0.5, 0.9}))
+        self.LuraRunesFrame:SetBackdropBorderColor(unpack(NSRT.EncounterAlerts[encID].LuraDisplay.Color or {0.5, 0.5, 0.5, 0.9}))
         self.LuraRunesFrame:SetWidth(200)
         self.LuraRunesFrame:SetHeight(200)
 

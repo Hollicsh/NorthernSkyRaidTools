@@ -403,61 +403,28 @@ local function BuildEncounterAlertsOptions()
             iconsize = {16, 16},
         },
         {
-            type = "select",
-            name = "Anchor of Runes-Display",
-            desc = "Defines the Anchor of the Runes-Display. They will grow right from there.",
-            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].LuraDisplayAnchor or "TOPLEFT" end,
-            values = function() return build_anchor_options("LuraDisplayAnchor") end,
-            nocombat = true,
-        },
-        {
-            type = "select",
-            name = "Relative Point of Runes-Display",
-            desc = "Defines the Relative Point of the Runes-Display. They will grow right from there.",
-            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].LuraDisplayRelativePoint or "TOPLEFT" end,
-            values = function() return build_anchor_options("LuraDisplayRelativePoint") end,
-            nocombat = true,
-        },
-        {
             type = "range",
-            name = "X-Offset of Runes-Display",
-            desc = "X-Offset of the Runes-Display",
-            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].LuraDisplayOffsetX or 300 end,
+            name = "Scale",
+            desc = "Scale of the Runes-Display",
+            get = function() return NSRT.EncounterAlerts[3183].LuraDisplay.Scale or 1 end,
             set = function(self, fixedparam, value)
-                NSRT.EncounterAlerts[3183] = NSRT.EncounterAlerts[3183] or {}
-                NSRT.EncounterAlerts[3183].LuraDisplayOffsetX = value
+                NSRT.EncounterAlerts[3183].LuraDisplay.Scale = value
                 if NSI.IsLuraPreview then
                     NSI.EncounterAlertStart[3183](NSI, 15, true)
                 end
             end,
-            min = -2000,
-            max = 2000,
-            nocombat = true,
-        },
-        {
-            type = "range",
-            name = "Y-Offset of Runes-Display",
-            desc = "Y-Offset of the Runes-Display",
-            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].LuraDisplayOffsetY or -300 end,
-            set = function(self, fixedparam, value)
-                NSRT.EncounterAlerts[3183] = NSRT.EncounterAlerts[3183] or {}
-                NSRT.EncounterAlerts[3183].LuraDisplayOffsetY = value
-                if NSI.IsLuraPreview then
-                    NSI.EncounterAlertStart[3183](NSI, 15, true)
-                end
-            end,
-            min = -2000,
-            max = 2000,
+            min = 0.3,
+            max = 2,
+            step = 0.1,
             nocombat = true,
         },
         {
             type = "color",
             name = "Background-Color",
             desc = "Color of the Background of the Rune Display",
-            get = function() return NSRT.EncounterAlerts[3183] and NSRT.EncounterAlerts[3183].LuraDisplayColor or {0.5, 0.5, 0.5, 0.9} end,
+            get = function() return NSRT.EncounterAlerts[3183].LuraDisplay.Color end,
             set = function(self, r, g, b, a)
-                NSRT.EncounterAlerts[3183] = NSRT.EncounterAlerts[3183] or {}
-                NSRT.EncounterAlerts[3183].LuraDisplayColor = {r, g, b, a}
+                NSRT.EncounterAlerts[3183].LuraDisplay.Color = {r, g, b, a}
                 if NSI.IsLuraPreview then
                     NSI.EncounterAlertStart[3183](NSI, 15, true)
                 end
@@ -473,8 +440,10 @@ local function BuildEncounterAlertsOptions()
                 NSI.IsLuraPreview = not NSI.IsLuraPreview
                 if NSI.IsLuraPreview then
                     NSI.EncounterAlertStart[3183](NSI, 15, true)
+                    NSI:MakeDraggable(NSI.LuraRunesFrame, NSRT.EncounterAlerts[3183].LuraDisplay, true)
                 else
                     NSI.EncounterAlertStop[3183](NSI)
+                    NSI:MakeDraggable(NSI.LuraRunesFrame, NSRT.EncounterAlerts[3183].LuraDisplay, false)
                 end
             end,
             nocombat = true
