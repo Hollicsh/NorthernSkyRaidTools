@@ -378,15 +378,14 @@ function NSI:StopFrameMove(F, SettingsTable)
     SettingsTable.relativeTo = relativeTo
 end
 
-function NSI:MakeDraggable(frame, settingsTable, enable)
-    if not frame then return end
+function NSI:MakeDraggable(F, settingsTable, enable)
+    if not F then return end
 
     if enable then
-        -- Create the drag-border once
-        if not frame._dragBorder then
-            local b = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-            b:SetPoint("TOPLEFT",     frame, "TOPLEFT",     -8,  8)
-            b:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT",  8, -8)
+        if not F.dragBorder then
+            local b = CreateFrame("Frame", nil, F, "BackdropTemplate")
+            b:SetPoint("TOPLEFT",     F, "TOPLEFT",     -8,  8)
+            b:SetPoint("BOTTOMRIGHT", F, "BOTTOMRIGHT",  8, -8)
             b:SetBackdrop({
                 bgFile   = "Interface\\Buttons\\WHITE8x8", tileSize = 0,
                 edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 2,
@@ -394,27 +393,27 @@ function NSI:MakeDraggable(frame, settingsTable, enable)
             b:SetBackdropColor(0, 0, 0, 0)
             b:SetBackdropBorderColor(1, 0.5, 0, 1)
             b:SetFrameStrata("DIALOG")
-            frame._dragBorder = b
+            F.dragBorder = b
         end
 
-        frame:SetMovable(true)
-        frame:EnableMouse(true)
-        frame:RegisterForDrag("LeftButton")
-        frame:SetClampedToScreen(true)
-        frame:SetFrameStrata("DIALOG")
-        frame._dragBorder:Show()
-        frame:Show()
+        F:SetMovable(true)
+        F:EnableMouse(true)
+        F:RegisterForDrag("LeftButton")
+        F:SetClampedToScreen(true)
+        F:SetFrameStrata("DIALOG")
+        F.dragBorder:Show()
+        F:Show()
 
-        frame:SetScript("OnDragStart", function(f) f:StartMoving() end)
-        frame:SetScript("OnDragStop", function(f)
+        F:SetScript("OnDragStart", function(f) f:StartMoving() end)
+        F:SetScript("OnDragStop", function(f)
             self:StopFrameMove(f, settingsTable)
         end)
     else
-        frame:SetMovable(false)
-        frame:EnableMouse(false)
-        frame:SetScript("OnDragStart", nil)
-        frame:SetScript("OnDragStop",  nil)
-        if frame._dragBorder then frame._dragBorder:Hide() end
+        F:SetMovable(false)
+        F:EnableMouse(false)
+        F:SetScript("OnDragStart", nil)
+        F:SetScript("OnDragStop",  nil)
+        if F.dragBorder then F.dragBorder:Hide() end
     end
 end
 
