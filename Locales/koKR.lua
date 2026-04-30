@@ -517,8 +517,8 @@ L["Paladins Dispel Assign"] = "선봉대 성기사 해제 배정"
 L["Link to a WA that assigns avenger's shield dispels - All healers, warlocks and dwarfs should have this. Dwarfs get the lowest priority on getting assigned. They will be told to use their racial if there are more debuffs than dispellers available."] = "응징의 방패 해제 배정 위크오라 링크 - 모든 힐러, 흑마법사, 드워프가 위크오라를 깔아놔야 합니다. 드워프는 배정 우선순위가 가장 낮습니다. 해제 가능한 수보다 디버프가 많으면 종족 특성을 사용하라고 나옵니다."
 L["Alleria P1 Dmg Amp"] = "알레리아 1페 뎀증"
 L["Displays the stacks of the dmg amp debuff on the nameplate of the 3 big adds. It is not perfect and might not display at all in some instances but it's better than nothing."] = "큰 쫄 3마리 이름표에 뎀증 디버프 중첩을 표시합니다. 완벽하지 않고 일부 상황에서는 표시되지 않을 수 있지만 없는 것보다는 낫습니다."
-L["Belo'ren Feather Color"] = "벨로렌 깃털 색상"
-L["Displays your Feather-Color on Belo'ren."] = "벨로렌에서 깃털 색상을 표시합니다."
+L["Belo'ren Feather Color"] = "벨로렌 깃털색"
+L["Displays your Feather-Color on Belo'ren."] = "벨로렌에서 깃털색을 표시합니다."
 
 -- ============================================================================
 -- UI/Reminders.lua (Reminder List Screen)
@@ -618,4 +618,6 @@ L["Outline style for the number"] = "번호의 외곽선 스타일입니다"
 L["Name Font"] = "이름 글꼴"
 L["Name Font Flags"] = "이름 글꼴 속성"
 L["Outline style for the name"] = "이름의 외곽선 스타일입니다"
+L["Interrupt Sound"] = "차단 효과음"
+L["Sound played when it is your turn to interrupt"] = "내 차단 차례가 되면 효과음을 재생합니다"
 L["Accept"] = "수락"
