@@ -449,6 +449,7 @@ local function BuildReminderScreen(personal, parentFrame)
                     if name == oldname then charTable[encID] = newname end
                 end
             end
+            if NSI.LoadedPersonalReminder == oldname then NSI.LoadedPersonalReminder = newname end
         else
             if NSRT[activeKey] == oldname then NSRT[activeKey] = newname end
         end
@@ -536,6 +537,7 @@ local function BuildReminderScreen(personal, parentFrame)
                             if name == oldName then charTable[encID] = newName end
                         end
                     end
+                    if NSI.LoadedPersonalReminder == oldName then NSI.LoadedPersonalReminder = newName end
                 else
                     if NSRT[activeKey] == oldName then NSRT[activeKey] = newName end
                 end
@@ -893,6 +895,7 @@ local function BuildReminderScreen(personal, parentFrame)
             end
 
             local isActive = false
+            local isLoaded = false
             if personal then
                 local activeTable = NSI:GetActivePersonalReminders()
                 if activeTable then
@@ -903,13 +906,19 @@ local function BuildReminderScreen(personal, parentFrame)
                         end
                     end
                 end
+                isLoaded = (line.name == NSI.LoadedPersonalReminder)
             else
                 isActive = (line.name == NSRT.ActiveReminder)
             end
 
-            if isActive then
+            if isLoaded then
                 line:SetBackdropBorderColor(0, 1, 0, 1)
                 line.__background:SetVertexColor(0, 1, 0)
+                line.__background:SetAlpha(1)
+                line.nameLabel:SetTextColor(1, 1, 1)
+            elseif isActive then
+                line:SetBackdropBorderColor(1, 0.8, 0, 1)
+                line.__background:SetVertexColor(1, 0.8, 0)
                 line.__background:SetAlpha(1)
                 line.nameLabel:SetTextColor(1, 1, 1)
             elseif line.name == screen.selectedName then
@@ -1020,6 +1029,7 @@ local function BuildReminderScreen(personal, parentFrame)
                         if name == oldname then charTable[eid] = newname end
                     end
                 end
+                if NSI.LoadedPersonalReminder == oldname then NSI.LoadedPersonalReminder = newname end
             else
                 if NSRT[activeKey] == oldname then NSRT[activeKey] = newname end
             end
