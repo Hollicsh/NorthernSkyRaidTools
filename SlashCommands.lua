@@ -56,6 +56,16 @@ SlashCmdList["NSUI"] = function(msg)
         NSI:InviteFromReminder(NSRT.ActiveReminder, true)
     elseif msg == "arrange" then
         NSI:ArrangeFromReminder(NSRT.ActiveReminder, true)
+    elseif msg == "debuglogs" then
+        NSRT.Settings.DebugLogs = not NSRT.Settings.DebugLogs
+        if NSRT.Settings.DebugLogs then
+            print("|cFF00FFFFNSRT|r Debug logs are now enabled")
+        else
+            print("|cFF00FFFFNSRT|r Debug logs are now disabled.")
+        end
+    elseif msg == "resetlogs" then
+        NSRTTimelineData = {}
+        print("|cFF00FFFFNSRT|r Timeline logs have been reset.")
     elseif msg == "help" then
         print("|cFF00FFFFNSRT|r Available commands: (either '/ns' or '/nsrt' work)\n")
         print("  |cFF00FFFF/ns debug|r - Toggle debug mode - mainly used for development")
