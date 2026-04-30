@@ -207,9 +207,6 @@ function NSI:InitPrivateAuraDisplay(unit, s)
     end
     local state = self.PAState[s]
 
-    for _, anchor in ipairs(state.anchors) do
-        C_UnitAuras.RemovePrivateAuraAnchor(anchor)
-    end
     state.anchors = {}
     if not s.enabled then return end
     local xDirection = (s.GrowDirection == "RIGHT" and 1) or (s.GrowDirection == "LEFT" and -1) or 0
@@ -281,7 +278,7 @@ function NSI:InitRaidPA(firstcall)
     if not NSRT.PARaidSettings.enabled then return end
 
     local party = not UnitInRaid("player")
-    local borderSize = NSRT.PARaidSettings.HideBorder and -100 or NSRT.PARaidSettings.Width/16
+    local borderSize = NSRT.PARaidSettings.HideBorder and -100 or NSRT.PARaidSettings.Width/(16*NSRT.PARaidSettings.StackScale)
     local stackscale = NSRT.PARaidSettings.StackScale or 1
     local xDirection = (NSRT.PARaidSettings.GrowDirection == "RIGHT" and 1) or (NSRT.PARaidSettings.GrowDirection == "LEFT" and -1) or 0
     local yDirection = (NSRT.PARaidSettings.GrowDirection == "DOWN" and -1) or (NSRT.PARaidSettings.GrowDirection == "UP" and 1) or 0
@@ -379,7 +376,7 @@ function NSI:PreviewPA(Show)
                 icon:Hide()
             end
         end
-        self:InitPrivateAuraDisplay("player", NSRT.PASettings)
+        self:InitPrivateAuras()
         self:InitTextPA()
         return
     end
@@ -443,7 +440,7 @@ function NSI:PreviewTankPA(Show)
                 break
             end
         end
-        self:InitPrivateAuraDisplay(tankUnit, NSRT.PATankSettings)
+        self:InitPrivateAuras()
         return
     end
     self.PATankPreviewMover:SetSize(NSRT.PATankSettings.Width, NSRT.PATankSettings.Height)
@@ -539,8 +536,26 @@ function NSI:PreviewRaidPA(Show, Init)
     end
 end
 
+function NSI:RemoveAllPrivateAuraAnchors()
+    if self.PAState then
+        for _, state in pairs(self.PAState) do
+            for _, anchor in ipairs(state.anchors) do
+                C_UnitAuras.RemovePrivateAuraAnchor(anchor)
+            end
+            state.anchors = {}
+        end
+    end
+    if self.AddedPARaid then
+        for _, anchor in ipairs(self.AddedPARaid) do
+            C_UnitAuras.RemovePrivateAuraAnchor(anchor)
+        end
+        self.AddedPARaid = {}
+    end
+end
+
 function NSI:InitPrivateAuras(firstcall)
     if self.IsBuilding then return end
+    self:RemoveAllPrivateAuraAnchors()
     self:InitTextPA()
     self:InitPrivateAuraDisplay("player", NSRT.PASettings)
     local diff = select(3, GetInstanceInfo()) or 0
