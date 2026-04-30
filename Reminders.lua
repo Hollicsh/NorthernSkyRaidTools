@@ -1425,8 +1425,15 @@ function NSI:UpdateReminderFrame(all, shared, personal, extra)
     end
 end
 
-function NSAPI:GetReminderString()
-    return NSI.PersonalReminder, NSI.Reminder
+function NSAPI:GetReminderString(encID)
+    local personal = NSI.PersonalReminder
+    if encID then
+        local name = NSI:GetActivePersonalReminders()[encID]
+        if name and NSRT.PersonalReminders[name] then
+            personal = NSRT.PersonalReminders[name]
+        end
+    end
+    return personal, NSI.Reminder
 end
 
 function NSI:CreateNoteFrame(Name, SettingsTable)
