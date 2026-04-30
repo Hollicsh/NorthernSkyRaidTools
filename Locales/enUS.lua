@@ -614,7 +614,6 @@ L["Outline style for the number"] = true
 L["Name Font"] = true
 L["Name Font Flags"] = true
 L["Outline style for the name"] = true
-L["Sound Settings"] = true
 L["Interrupt Sound"] = true
 L["Sound played when it is your turn to interrupt"] = true
 L["Accept"] = true
