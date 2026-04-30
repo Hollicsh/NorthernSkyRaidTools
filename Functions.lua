@@ -466,9 +466,11 @@ function NSI:LogTimeline(e, ...)
         if self.CurrentEncounterData then
             self.CurrentEncounterData.success = success == 1
             local elapsed = now - self.CurrentEncounterData.pullTime
-            self.CurrentEncounterData.pullTime = nil
-            self.CurrentEncounterData.length = string.format("%02d:%02d", math.floor(elapsed / 60), math.floor(elapsed % 60))
-            table.insert(NSRTTimelineData, self.CurrentEncounterData)
+            if elapsed >= 30 then
+                self.CurrentEncounterData.pullTime = nil
+                self.CurrentEncounterData.length = string.format("%02d:%02d", math.floor(elapsed / 60), math.floor(elapsed % 60))
+                table.insert(NSRTTimelineData, self.CurrentEncounterData)
+            end
         end
         self.CurrentEncounterData = nil
     elseif e == "NSRT_PHASE" then
@@ -483,7 +485,7 @@ function NSI:LogTimeline(e, ...)
         local now = GetTime()
         local stateNames = { [0] = "Active", [1] = "Paused", [2] = "Finished", [3] = "Canceled" }
         if e == "ENCOUNTER_TIMELINE_EVENT_ADDED" then
-            data.dur = info.time
+            data.dur = info.duration
             data.id = info.id
             data.Queue = info.maxQueueDuration
         elseif e == "ENCOUNTER_TIMELINE_EVENT_STATE_CHANGED" then
@@ -494,7 +496,7 @@ function NSI:LogTimeline(e, ...)
             data.id = info
         end
         data.time = now - self.CurrentEncounterData.pullTime
-        tinsert(self.CurrentEncounterData.events, string.format("[%7.2f]  %-45s  id: %-10s%s%s%s",
+        tinsert(self.CurrentEncounterData.events, string.format("[%6.2f]  %-45s  id: %-10s%s%s%s",
             data.time,
             e,
             tostring(data.id or "nil"),
