@@ -215,9 +215,10 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
         }
         self:AddRemindersFromTable(Alert, timers[id])
     end
-    if NSRT.EncounterAlerts[encID].InterruptsDisplay and realpull and id == 16 then
+    if NSRT.EncounterAlerts[encID].InterruptDisplay and realpull and id == 16 then
         self:EncounterRegister("UNIT_SPELLCAST_START", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", true, {"boss2", "boss3", "boss4"})
+        self:EncounterRegister("UNIT_SPELLCAST_STOP", true, {"boss2", "boss3", "boss4"})
         self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", true)
         self:ReadInterruptNote(1)
         self.EncounterFrame:SetScript("OnEvent", function(_, e, unit, ...)
@@ -234,6 +235,10 @@ NSI.EncounterAlertStart[encID] = function(self, id, preview) -- on ENCOUNTER_STA
             elseif e == "UNIT_SPELLCAST_INTERRUPTED" then
                 if self.Interrupts.myTrackedID and unit == "boss"..self.Interrupts.myTrackedID and UnitIsEnemy(unit, "player") then
                     self:OnInterrupt(true)
+                end
+            elseif e == "UNIT_SPELLCAST_STOP" then
+                if self.Interrupts.myTrackedID and unit == "boss"..self.Interrupts.myTrackedID and UnitIsEnemy(unit, "player") then
+                    self:OnCastStop(true)
                 end
             elseif e == "INSTANCE_ENCOUNTER_ENGAGE_UNIT" then
                 if UnitExists("boss2") and UnitIsEnemy("boss2", "player") then
@@ -483,6 +488,7 @@ NSI.DetectPhaseChange[encID] = function(self, e, info)
                 self:HideInterrupt()
                 self:EncounterRegister("UNIT_SPELLCAST_START", false)
                 self:EncounterRegister("UNIT_SPELLCAST_INTERRUPTED", false)
+                self:EncounterRegister("UNIT_SPELLCAST_STOP", false)
                 self:EncounterRegister("INSTANCE_ENCOUNTER_ENGAGE_UNIT", false)
                 if self.Interrupts then self.Interrupts.disabled = true end
             end

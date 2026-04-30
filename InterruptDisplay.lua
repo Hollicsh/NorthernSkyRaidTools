@@ -58,7 +58,7 @@ function NSI:HideInterrupt()
 end
 
 function NSI:ResetInterrupts()
-    self.Interrupts.castCount = 0
+    self.Interrupts.castCount = 1
     self.Interrupts.myTrackedID = self.Interrupts.myID
     self:HideInterrupt()
 end
@@ -74,8 +74,14 @@ end
 
 function NSI:OnInterrupt(shouldHide)
     if not self.Interrupts or self.Interrupts.disabled then return end
-    self.Interrupts.castCount = self.Interrupts.castCount + 1
     if self.Interrupts.myTrackedID == 0 then return end
+    self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
+end
+
+function NSI:OnCastStop(shouldHide)
+    if not self.Interrupts or self.Interrupts.disabled then return end
+    if self.Interrupts.myTrackedID == 0 then return end
+    self.Interrupts.castCount = self.Interrupts.castCount + 1
     self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
 end
 
@@ -91,7 +97,7 @@ function NSI:ReadInterruptNote(StartNumber)
     self.Interrupts.myID = 0
     self.Interrupts.myKick = 0
     self.Interrupts.myTrackedID = 0
-    self.Interrupts.castCount = 0
+    self.Interrupts.castCount = 1
     self.Interrupts.disabled = false
     self.Interrupts.max = 0
     self.Interrupts.myTable = {}
