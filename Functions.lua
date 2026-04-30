@@ -99,10 +99,11 @@ function NSI:UpdateLibSpecRegistration()
             self.specs = self.specs or {}
             self.GUIDS = self.GUIDS or {}
             local name, realm = strsplit("-", playerName)
-            if not realm then realm = myrealm end
+            if (not realm) or (realm == "") then realm = myrealm end
             local u
             for unit in self:IterateGroupMembers() do
                 local uname, urealm = UnitFullName(unit)
+                if not urealm then urealm = myrealm end
                 if uname and uname == name and urealm and urealm == realm then
                     u = unit
                     break
@@ -110,6 +111,7 @@ function NSI:UpdateLibSpecRegistration()
             end
             if u then
                 self.specs[u] = specId
+                NSAPI.specs = self.specs
                 local G = UnitGUID(u)
                 self.GUIDS[u] = issecretvalue(G) and "" or G
             end
