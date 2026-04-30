@@ -612,4 +612,6 @@ L["Outline style for the number"] = "Стиль контура для числа
 L["Name Font"] = "Шрифт имени"
 L["Name Font Flags"] = "Флаги шрифта имени"
 L["Outline style for the name"] = "Стиль контура для имени"
+L["Interrupt Sound"] = "Звук прерывания"
+L["Sound played when it is your turn to interrupt"] = "Проигрываемый звук, когда подходит Ваша очередь прерывать заклинание"
 L["Accept"] = "Принять"
