@@ -55,6 +55,21 @@ local function buildFontOptions(key)
     return t
 end
 
+local function buildSoundOptions()
+    local t = {}
+    for _, name in ipairs(NSI.LSM:List("sound")) do
+        tinsert(t, {
+            label = name,
+            value = name,
+            onclick = function()
+                NSRT.InterruptSettings.InterruptSound = name
+                PlaySoundFile(NSI.LSM:Fetch("sound", name), "Master")
+            end,
+        })
+    end
+    return t
+end
+
 local function BuildInterruptDisplayOptions()
     return {
         { type = "label", get = function() return L["Size & Position"] end, text_template = DF:GetTemplate("font", "ORANGE_FONT_TEMPLATE") },
@@ -125,6 +140,14 @@ local function BuildInterruptDisplayOptions()
             get = function() return NSRT.InterruptSettings.relativeTo end,
             set = function() end,
             values = function() return buildAnchorOptions("RelativeTo") end,
+        },
+        {
+            type = "select",
+            name = L["Interrupt Sound"],
+            desc = L["Sound played when it is your turn to interrupt"],
+            get = function() return NSRT.InterruptSettings.InterruptSound end,
+            set = function() end,
+            values = function() return buildSoundOptions() end,
         },
 
         { type = "breakline" },

@@ -26,15 +26,21 @@ function NSI:CreateInterruptDisplay()
     self.InterruptDisplay.Name:SetFont(self.LSM:Fetch("font", NSRT.InterruptSettings.NameFont), NSRT.InterruptSettings.NameFontSize, NSRT.InterruptSettings.NameFontFlags)
 end
 
-function NSI:DisplayInterrupt()
-    local unit = self.Interrupts.myTable[self.Interrupts.castCount]
+function NSI:DisplayInterrupt(isCastStart)
+    local myKick = self.Interrupts.myKick
+    local castCount = self.Interrupts.castCount
+    local unit = self.Interrupts.myTable[castCount]
     local name = unit and UnitExists(unit) and NSAPI:Shorten(unit, 12, false, "GlobalNickNames", false, false) or ""
     self:CreateInterruptDisplay()
-    self.InterruptDisplay.Number:SetText(self.Interrupts.castCount or "")
+    self.InterruptDisplay.Number:SetText(castCount or "")
     self.InterruptDisplay.Name:SetText(name)
-    if self.Interrupts.castCount == self.Interrupts.myKick then -- player interrupts now
-        self.InterruptDisplay.Box:SetColorTexture(0, 1, 0, 1)
-    elseif (self.Interrupts.castCount+1 == self.Interrupts.myKick) or (self.Interrupts.myKick == 1 and self.Interrupts.castCount >= self.Interrupts.max) then -- player interrupts next
+    if castCount == myKick then
+        if isCastStart then -- player interrupts now
+            self.InterruptDisplay.Box:SetColorTexture(0, 1, 0, 1)
+        else -- player interrupts next
+            self.InterruptDisplay.Box:SetColorTexture(1, 1, 0, 1)
+        end
+    elseif (castCount+1 == myKick) or (myKick == 1 and castCount == self.Interrupts.max) then
         self.InterruptDisplay.Box:SetColorTexture(1, 1, 0, 1)
     else
         self.InterruptDisplay.Number:SetTextColor(1, 1, 1, 1)
@@ -44,7 +50,10 @@ function NSI:DisplayInterrupt()
 end
 
 function NSI:PlayInterruptSound()
-    PlaySoundFile(NSI.LSM:Fetch("sound", NSRT.InterruptSettings.Sound), "Master")
+    local sound = NSRT.InterruptSettings.InterruptSound
+    if sound then
+        PlaySoundFile(NSI.LSM:Fetch("sound", sound), "Master")
+    end
 end
 
 function NSI:HideInterrupt()
@@ -59,29 +68,29 @@ function NSI:ResetInterrupts()
     self:HideInterrupt()
 end
 
-function NSI:InterruptOnCastStart(shouldHide)
+function NSI:InterruptOnCastStart()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
+    self:DisplayInterrupt(unit, self.Interrupts.castCount, true)
     if self.Interrupts.castCount == self.Interrupts.myKick then
         self:PlayInterruptSound()
     end
 end
 
-function NSI:OnInterrupt(shouldHide)
+function NSI:OnInterrupt()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
+    self:DisplayInterrupt(unit, self.Interrupts.castCount)
 end
 
-function NSI:OnCastStop(shouldHide)
+function NSI:OnCastStop()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
     self.Interrupts.castCount = self.Interrupts.castCount + 1
     if self.Interrupts.castCount > self.Interrupts.myKick then
         self.Interrupts.castCount = 1
     end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
+    self:DisplayInterrupt(unit, self.Interrupts.castCount)
 end
 
 function NSI:ReadInterruptNote(StartNumber)
