@@ -139,7 +139,7 @@ local function BuildInterruptDisplayOptions()
             desc = L["Which corner/edge of the parent frame to anchor to"],
             get = function() return NSRT.InterruptSettings.relativeTo end,
             set = function() end,
-            values = function() return buildAnchorOptions("RelativeTo") end,
+            values = function() return buildAnchorOptions("relativeTo") end,
         },
         {
             type = "select",
@@ -202,9 +202,9 @@ local function BuildInterruptDisplayOptions()
             type = "select",
             name = L["Number Relative Point"],
             desc = L["Which corner/edge of the box the number anchors to"],
-            get = function() return NSRT.InterruptSettings.NumberrelativeTo end,
+            get = function() return NSRT.InterruptSettings.NumberRelativeTo end,
             set = function() end,
-            values = function() return buildAnchorOptions("NumberrelativeTo") end,
+            values = function() return buildAnchorOptions("NumberRelativeTo") end,
         },
 
         { type = "breakline" },
@@ -259,9 +259,9 @@ local function BuildInterruptDisplayOptions()
             type = "select",
             name = L["Name Relative Point"],
             desc = L["Which corner/edge of the box the name anchors to"],
-            get = function() return NSRT.InterruptSettings.NamerelativeTo end,
+            get = function() return NSRT.InterruptSettings.NameRelativeTo end,
             set = function() end,
-            values = function() return buildAnchorOptions("NamerelativeTo") end,
+            values = function() return buildAnchorOptions("NameRelativeTo") end,
         },
     }
 end
