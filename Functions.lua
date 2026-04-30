@@ -92,38 +92,28 @@ end
 function NSI:UpdateLibSpecRegistration()
     self.LS = self.LS or LibStub("LibSpecialization", true)
     if not self.LS then return end
-
-    if UnitInRaid("player") then
-        if not self._libSpecRegistered then
-            self._libSpecRegistered = true
-            local _, myrealm = UnitFullName("player")
-            self.LS.RegisterGroup(self, function(specId, role, position, playerName)
-                self.specs = self.specs or {}
-                self.GUIDS = self.GUIDS or {}
-                local name, realm = strsplit("-", playerName)
-                if not realm then realm = myrealm end
-                local u
-                for unit in self:IterateGroupMembers() do
-                    local uname, urealm = UnitFullName(unit)
-                    if uname and uname == name and urealm and urealm == realm then
-                        u = unit
-                        break
-                    end
+    if not self._libSpecRegistered then
+        self._libSpecRegistered = true
+        local _, myrealm = UnitFullName("player")
+        self.LS.RegisterGroup(self, function(specId, role, position, playerName)
+            self.specs = self.specs or {}
+            self.GUIDS = self.GUIDS or {}
+            local name, realm = strsplit("-", playerName)
+            if not realm then realm = myrealm end
+            local u
+            for unit in self:IterateGroupMembers() do
+                local uname, urealm = UnitFullName(unit)
+                if uname and uname == name and urealm and urealm == realm then
+                    u = unit
+                    break
                 end
-                if u then
-                    self.specs[u] = specId
-                    local G = UnitGUID(u)
-                    self.GUIDS[u] = issecretvalue(G) and "" or G
-                end
-            end)
-        end
-    else
-        if self._libSpecRegistered then
-            self._libSpecRegistered = false
-            self.LS.UnregisterGroup(self)
-            self.specs = {}
-            self.GUIDS = {}
-        end
+            end
+            if u then
+                self.specs[u] = specId
+                local G = UnitGUID(u)
+                self.GUIDS[u] = issecretvalue(G) and "" or G
+            end
+        end)
     end
 end
 
