@@ -21,7 +21,7 @@ local function BuildPrivateAurasOptions()
             get = function() return NSRT.PASettings.enabled end,
             set = function(self, fixedparam, value)
                 NSRT.PASettings.enabled = value
-                NSI:InitPA()
+                NSI:InitPrivateAuras()
             end,
             icontexture = 237555,
             iconsize = {16, 16},
@@ -165,7 +165,7 @@ local function BuildPrivateAurasOptions()
             get = function() return NSRT.PATextSettings.enabled end,
             set = function(self, fixedparam, value)
                 NSRT.PATextSettings.enabled = value
-                NSI:InitTextPA()
+                NSI:InitPrivateAuras()
             end,
         },
         {
@@ -197,7 +197,7 @@ local function BuildPrivateAurasOptions()
             get = function() return NSRT.PARaidSettings.enabled end,
             set = function(self, fixedparam, value)
                 NSRT.PARaidSettings.enabled = value
-                NSI:InitRaidPA()
+                NSI:InitPrivateAuras()
             end,
             icontexture = 7454100,
             iconsize = {16, 16},
@@ -425,6 +425,7 @@ local function BuildPrivateAurasOptions()
             get = function() return NSRT.PATankSettings.enabled end,
             set = function(self, fixedparam, value)
                 NSRT.PATankSettings.enabled = value
+                NSI:InitPrivateAuras()
             end,
             icontexture = 236318,
             iconsize = {16, 16},

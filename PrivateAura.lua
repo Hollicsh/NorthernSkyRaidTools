@@ -211,7 +211,7 @@ function NSI:InitPrivateAuraDisplay(unit, s)
     if not s.enabled then return end
     local xDirection = (s.GrowDirection == "RIGHT" and 1) or (s.GrowDirection == "LEFT" and -1) or 0
     local yDirection = (s.GrowDirection == "DOWN" and -1) or (s.GrowDirection == "UP" and 1) or 0
-    local borderSize = s.HideBorder and -100 or s.Width/16
+    local borderSize = s.HideBorder and -100 or s.Width/(16*s.StackScale)
     local stackscale = s.StackScale
     if stackscale > 3 then stackscale = 3 end -- old settings allowed this to be higher
 
