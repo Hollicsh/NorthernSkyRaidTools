@@ -26,7 +26,7 @@ function NSI:CreateInterruptDisplay()
     self.InterruptDisplay.Name:SetFont(self.LSM:Fetch("font", NSRT.InterruptSettings.NameFont), NSRT.InterruptSettings.NameFontSize, NSRT.InterruptSettings.NameFontFlags)
 end
 
-function NSI:DisplayInterrupt(shouldHide)
+function NSI:DisplayInterrupt()
     local unit = self.Interrupts.myTable[self.Interrupts.castCount]
     local name = unit and UnitExists(unit) and NSAPI:Shorten(unit, 12, false, "GlobalNickNames", false, false) or ""
     self:CreateInterruptDisplay()
@@ -40,11 +40,7 @@ function NSI:DisplayInterrupt(shouldHide)
         self.InterruptDisplay.Number:SetTextColor(1, 1, 1, 1)
         self.InterruptDisplay.Box:SetColorTexture(1, 0, 0, 1)
     end
-    if shouldHide and self.Interrupts.castCount > self.Interrupts.myKick then
-        self:HideInterrupt()
-    else
-        self.InterruptDisplay:Show()
-    end
+    self.InterruptDisplay:Show()
 end
 
 function NSI:PlayInterruptSound()
@@ -82,6 +78,9 @@ function NSI:OnCastStop(shouldHide)
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
     self.Interrupts.castCount = self.Interrupts.castCount + 1
+    if self.Interrupts.castCount > self.Interrupts.myKick then
+        self.Interrupts.castCount = 1
+    end
     self:DisplayInterrupt(unit, self.Interrupts.castCount, shouldHide)
 end
 
