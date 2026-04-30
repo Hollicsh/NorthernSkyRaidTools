@@ -521,8 +521,6 @@ L["Alleria P1 Dmg Amp"] = "알레리아 1페 뎀증"
 L["Displays the stacks of the dmg amp debuff on the nameplate of the 3 big adds. It is not perfect and might not display at all in some instances but it's better than nothing."] = "큰 쫄 3개의 이름표에 뎀증 디버프 중첩을 표시합니다. 완벽하지 않고 일부 상황에서는 표시되지 않을 수 있지만 없는 것보다는 낫습니다."
 L["Belo'ren Feather Color"] = "벨로렌 깃털 색상"
 L["Displays your Feather-Color on Belo'ren."] = "벨로렌에서 깃털 색상을 표시합니다."
-L["Lura Interrupts"] = "르우라 차단"
-L["Interrupt WA for Lura P1."] = "르우라 1페 차단 위크오라입니다."
 
 -- ============================================================================
 -- UI/Reminders.lua (Reminder List Screen)
