@@ -71,7 +71,7 @@ end
 function NSI:InterruptOnCastStart()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount, true)
+    self:DisplayInterrupt(true)
     if self.Interrupts.castCount == self.Interrupts.myKick then
         self:PlayInterruptSound()
     end
@@ -80,17 +80,17 @@ end
 function NSI:OnInterrupt()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount)
+    self:DisplayInterrupt()
 end
 
 function NSI:OnCastStop()
     if not self.Interrupts or self.Interrupts.disabled then return end
     if self.Interrupts.myTrackedID == 0 then return end
     self.Interrupts.castCount = self.Interrupts.castCount + 1
-    if self.Interrupts.castCount > self.Interrupts.myKick then
+    if self.Interrupts.castCount > self.Interrupts.max then
         self.Interrupts.castCount = 1
     end
-    self:DisplayInterrupt(unit, self.Interrupts.castCount)
+    self:DisplayInterrupt()
 end
 
 function NSI:ReadInterruptNote(StartNumber)
