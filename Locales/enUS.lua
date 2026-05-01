@@ -246,7 +246,7 @@ L["Runs a test for the currently active reminder. This will only show phase 1 ti
 -- UI/Options/Reminders.lua — Reminder Note Options
 L["This tab is purely for Settings to display Reminders as a Note on-screen. They have no effect on how the in-combat alerts work.\nThere are 3 types of displays. The first one shows all reminders, the second one shows only those that will activate for you. And the third shows all text that is not a reminder."] = true
 L["All Reminders Note"] = true
-L["Toggle All Reminders"] = true
+L["Unlock All Reminders"] = true
 L["Locks/Unlocks the All Reminders Note to be moved around"] = true
 L["Show All Reminders Note"] = true
 L["Whether you want to show the All Reminders Note on screen permanently"] = true
@@ -272,7 +272,7 @@ L["With this enabled the Notes will still show outside of raid instances."] = tr
 
 -- Reminder Note — Personal
 L["Personal Reminder-Note"] = true
-L["Toggle Pers Reminder"] = true
+L["Unlock Pers Reminder"] = true
 L["Locks/Unlocks the Personal Reminders Note to be moved around"] = true
 L["Show Personal Reminder Note"] = true
 L["Whether you want to display the Note for Reminders only relevant to you"] = true
@@ -286,7 +286,7 @@ L["Display the Text-Note inside the Personal Reminders Note."] = true
 
 -- Reminder Note — Text-Note
 L["Text-Note"] = true
-L["Toggle Text Note"] = true
+L["Unlock Text Note"] = true
 L["Locks/Unlocks the Text Note to be moved around. This Note shows anything from the reminders that it is not an actual reminder string. So you can put any text in there to be displayed."] = true
 L["Show Text Note"] = true
 L["Whether you want to display the Text-Note"] = true
