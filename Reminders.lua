@@ -98,7 +98,7 @@ function NSI:AddToReminder(info)
         info.glowunit = glowtable
     end
     -- play default sound if enabled and no TTS/Sound was specified
-    if NSRT.ReminderSettings.PlayDefaultSound and (type(info.TTS) == "boolean" or not info.TTS) and (not info.sound) and (not (info.IsAlert or info.IsAssignment)) then
+    if NSRT.ReminderSettings.PlayDefaultSound and info.spellID and (type(info.TTS) == "boolean" or not info.TTS) and (not info.sound) and (not (info.IsAlert or info.IsAssignment)) then
         info.sound = NSRT.ReminderSettings.DefaultSound
     end
 
