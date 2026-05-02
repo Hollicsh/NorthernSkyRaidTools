@@ -21,7 +21,7 @@ NSI.EncounterAlertStart[encID] = function(self, id) -- on ENCOUNTER_START
 
             local timers = {
                 [15] = {12.2, 16.2, 20.2, 24.2, 28.2, 32.2, 36.2, 40.2},
-                [16] = {11.7, 15.2, 18.7, 22.2, 25.7, 29.2, 32.7, 36.2, 39.7},
+                [16] = {11.7, 15.2, 18.7, 22.2, 25.7, 29.2, 32.7, 36.2, 39.7, 43.2, 46.7, 50.2},
             }
             local Alert = self:CreateDefaultAlert("Next Hit", "Bar", 1242792, 4, phase, encID)
             if id == 16 then Alert.dur = 3.5 end
@@ -32,7 +32,7 @@ NSI.EncounterAlertStart[encID] = function(self, id) -- on ENCOUNTER_START
             local timers = {
                 [16] ={
                     {18.8, 68.8},
-                    {60.6, 110.6, 160.6},
+                    {70.6, 120.6, 170.6},
                 }
             }
             local Alert = self:CreateDefaultAlert("Soaks", "Text", nil, 8, phase, encID)
@@ -42,7 +42,7 @@ NSI.EncounterAlertStart[encID] = function(self, id) -- on ENCOUNTER_START
             local timers = {
                 [16] = {
                     {27.4, 37.4, 47.4, 77.4, 87.4, 97.4},
-                    {69.2, 79.2, 89.2, 119.2, 129.2, 139.2, 169.2},
+                    {79.2, 89.2, 99.2, 129.2, 139.2, 149.2, 179.2},
                 }
             }
             local Alert = self:CreateDefaultAlert("Quills", "Text", nil, 6, phase, encID)
@@ -71,7 +71,7 @@ NSI.DetectPhaseChange[encID] = function(self, e, info)
     local difficultyID = select(3, GetInstanceInfo()) or 0
     if not difficultyID or not detectedDurations[difficultyID] then return end
     table.insert(self.Timelines, now)
-    if self.Phase >= 2 and ApproximatelyEqual(info.duration, 30, 0.2) then
+    if self.Phase >= 2 and ApproximatelyEqual(info.duration, 40, 0.2) then
         local diff = now - self.PhaseSwapTime
         local offset = diff - 7.1
         if diff <= 20 and offset > 0.3 then -- bird has delayed his landing so we extend all timers
