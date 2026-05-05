@@ -216,7 +216,7 @@ function NSI:AddMissingDefaults()
             HideBorder = false,
             StackScale = 2,
             HideTooltip = false,
-            UpscaleDuration = false,
+            HideDurationText = false,
         },
         PATankSettings = {
             Spacing = -1,
@@ -233,7 +233,7 @@ function NSI:AddMissingDefaults()
             HideBorder = false,
             StackScale = 2,
             HideTooltip = false,
-            UpscaleDuration = false,
+            HideDurationText = false,
         },
         PARaidSettings = {
             PerRow = 3,
